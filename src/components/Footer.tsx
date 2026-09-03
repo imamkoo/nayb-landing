@@ -1,19 +1,19 @@
 import React from "react";
 import { footerCols, footerSocials } from "../utils/content";
-import LogoIconDark from "./Icons/LogoIconDark";
+import NayBGlobalLogo from "./Icons/NayBGlobalLogo";
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-primary-800 px-4 pt-16 pb-10 sm:px-6 lg:px-12">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-12 text-white lg:flex-row">
-        <div className="flex max-w-md gap-4">
-          <LogoIconDark className="block h-12 w-12 shrink-0" />
+        <div className="flex max-w-md flex-col gap-4">
+          <NayBGlobalLogo className="h-12" variant="dark" />
           <div>
             <p className="mb-3 text-lg font-semibold">
-              NayBe - Your Future Starts
+              Your Future Starts
             </p>
             <p className="mb-6 text-sm font-light leading-relaxed text-white/80">
-              NayBe create study adventures you’ll never forget. Choose your
+              NAY-B GLOBAL creates study adventures you’ll never forget. Choose your
               dream destination, and we’ll handle everything for a stress-free
               global experience.
             </p>

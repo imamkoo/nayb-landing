@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import React, { useState, useEffect } from "react";
 import { navigationLinks } from "../../utils/content";
 import { Button } from "../ui/button";
+import NayBGlobalLogo from "../Icons/NayBGlobalLogo";
 
 const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -16,14 +17,8 @@ const Navigation: React.FC = () => {
     <div className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-lg shadow-sm" : "bg-transparent"}`}>
       <div className="m-auto max-w-[108rem] px-4 pt-4 pb-3 sm:px-6 lg:px-12">
         <nav className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5 group focus-visible:outline-none">
-            {/* Placeholder Logo */}
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-700 to-primary-300 text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
-              N
-            </div>
-            <span className="text-2xl font-bold text-primary-800">
-              NayBe
-            </span>
+          <Link to="/" className="flex items-center group focus-visible:outline-none">
+            <NayBGlobalLogo className="h-10 sm:h-12" variant="light" />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-8">
