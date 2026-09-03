@@ -2,11 +2,21 @@ import { createClient } from "@supabase/supabase-js";
 import { BlogPost, Lead, Location } from "../utils/contentTypes";
 import { Database } from "./Database";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
-const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+// Lazy client: a missing/invalid env must only fail the calling section
+// (which already renders an error state), never crash the whole route
+// at import time via TanStack Router's default error boundary.
+function getClient() {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error(
+      "Supabase is not configured (missing VITE_SUPABASE_URL / VITE_SUPABASE_API_KEY).",
+    );
+  }
+  return createClient<Database>(supabaseUrl, supabaseKey);
+}
 const getBlogPosts = async () => {
-  const { data, error } = await supabase.from("BlogPosts").select();
+  const { data, error } = await getClient().from("BlogPosts").select();
 
   //   throw new Error("some error occurred...");
 
@@ -31,7 +41,7 @@ const getBlogPosts = async () => {
 };
 
 const getLocations = async () => {
-  const { data, error } = await supabase.from("Locations").select();
+  const { data, error } = await getClient().from("Locations").select();
 
   //   throw new Error("some error occurred...");
 
@@ -57,7 +67,7 @@ const getLocations = async () => {
 };
 
 const insertLead = async (lead: Lead) => {
-  const { error } = await supabase.from("Leads").insert([
+  const { error } = await getClient().from("Leads").insert([
     {
       created_at: lead.createdAt,
       full_name: lead.fullName,
