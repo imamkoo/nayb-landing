@@ -25,7 +25,7 @@ jobs:
 
       - name: Issue certificate via Netlify DNS
         env:
-          Netlify_Token: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
           "$HOME/.acme.sh/acme.sh" --issue --server letsencrypt \
             --dns dns_netlify \
