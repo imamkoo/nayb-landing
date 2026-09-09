@@ -1,223 +1,342 @@
-import React, { useState, useEffect } from "react";
-import { motion, useMotionValue, useTransform, useSpring, useReducedMotion } from "motion/react";
-import { heroBenefits } from "../../utils/content";
-import { Button } from "../ui/button";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
+
+gsap.registerPlugin(ScrollTrigger);
+
+type Destination = {
+  id: string;
+  country: string;
+  short: string;
+  tagline: string;
+  program: string;
+  image: string;
+};
+
+// Asia Tenggara — edutour sekolah / pertukaran pelajar
+const DESTINATIONS: Destination[] = [
+  {
+    id: "indonesia",
+    country: "INDONESIA",
+    short: "ID",
+    tagline: "Bali & Yogyakarta — Budaya, Bahasa & Alam",
+    program: "Pertukaran Pelajar • 7–14 Hari",
+    image:
+      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "thailand",
+    country: "THAILAND",
+    short: "TH",
+    tagline: "Bangkok & Chiang Mai — Sekolah Mitra & Homestay",
+    program: "School Immersion • 5–10 Hari",
+    image:
+      "https://images.unsplash.com/photo-1508009603885-50cf7c579365?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "vietnam",
+    country: "VIETNAM",
+    short: "VN",
+    tagline: "Hanoi & Ha Long Bay — Sejarah & Sains Lapangan",
+    program: "Study Field Trip • 6–12 Hari",
+    image:
+      "https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "malaysia",
+    country: "MALAYSIA",
+    short: "MY",
+    tagline: "Kuala Lumpur & Penang — STEM & Multikultural",
+    program: "Edu Camp • 4–8 Hari",
+    image:
+      "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "singapore",
+    country: "SINGAPORE",
+    short: "SG",
+    tagline: "Little Red Dot — Kampus, Lab & Inovasi",
+    program: "Campus Visit • 3–6 Hari",
+    image:
+      "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "philippines",
+    country: "PHILIPPINES",
+    short: "PH",
+    tagline: "Cebu & El Nido — English Immersion & Konservasi",
+    program: "Language Trip • 7–14 Hari",
+    image:
+      "https://images.unsplash.com/photo-1559494007-9f5847c49d94?q=80&w=2000&auto=format&fit=crop",
+  },
+];
+
+const AUTOPLAY_MS = 6000;
 
 const Hero: React.FC = () => {
   const reduce = useReducedMotion();
-  const [timeString, setTimeString] = useState<string>("");
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<number | null>(null);
 
-  // Live Realtime Clock for Floating Badge (like reference image widget)
+  const active = DESTINATIONS[index];
+
+  const go = useCallback(
+    (dir: 1 | -1) => {
+      setIndex((prev) => (prev + dir + DESTINATIONS.length) % DESTINATIONS.length);
+    },
+    []
+  );
+
+  // Autoplay rotasi negara — mati bila reduced-motion / hover
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeString(
-        now.toLocaleTimeString("en-US", {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
+    if (reduce || paused) return;
+    timerRef.current = window.setTimeout(() => go(1), AUTOPLAY_MS);
+    return () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
     };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [index, paused, reduce, go]);
 
-  // 3D Parallax Tilt Effect setup using Framer Motion
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  // GSAP ScrollTrigger parallax — bg melambat, judul melayang naik + fade
+  useEffect(() => {
+    if (reduce || !rootRef.current) return;
+    const ctx = gsap.context(() => {
+      if (bgRef.current) {
+        gsap.fromTo(
+          bgRef.current,
+          { yPercent: -8, scale: 1.12 },
+          {
+            yPercent: 12,
+            scale: 1.2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { yPercent: 0, opacity: 1 },
+          {
+            yPercent: -45,
+            opacity: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: "top top",
+              end: "70% top",
+              scrub: true,
+            },
+          }
+        );
+      }
+    }, rootRef);
+    return () => ctx.revert();
+  }, [reduce]);
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  // Mouse parallax halus (motion value — tanpa re-render)
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 60, damping: 18 });
+  const sy = useSpring(my, { stiffness: 60, damping: 18 });
+  const bgX = useTransform(sx, [-0.5, 0.5], ["-1.5%", "1.5%"]);
+  const bgY = useTransform(sy, [-0.5, 0.5], ["-1.5%", "1.5%"]);
+  const titleX = useTransform(sx, [-0.5, 0.5], ["-12px", "12px"]);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reduce) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (reduce || !rootRef.current) return;
+    const r = rootRef.current.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
   };
 
   return (
-    <section className="relative m-auto max-w-[108rem] px-4 sm:px-6 lg:px-8 pt-4 pb-12 perspective-[1200px]">
-      {/* 3D Tilt Wrapper */}
-      <motion.div
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={
-          reduce
-            ? {}
-            : {
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-              }
-        }
-        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary-800 via-[#4A0E4E] to-[#6b1670] p-8 sm:p-12 lg:p-16 text-white shadow-2xl transition-all duration-200 border border-white/10"
-      >
-        {/* Decorative Background Glows */}
-        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-pink-500/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-primary-300/30 blur-3xl" />
-        
-        {/* Subtle Overlay Pattern */}
-        <div 
-          className="absolute inset-0 bg-[url('/hero.webp')] bg-cover bg-center opacity-25 mix-blend-overlay pointer-events-none"
-          aria-hidden="true"
-        />
-
-        {/* Floating Top Right Time Widget (Inspired by Reference Design) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          style={{ transform: "translateZ(40px)" }}
-          className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20 hidden md:flex items-center gap-3 rounded-full bg-white/10 px-5 py-2.5 backdrop-blur-xl border border-white/20 shadow-lg"
-        >
-          <div className="relative flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-pink-200">
-              GLOBAL DESTINATION TIME
-            </span>
-            <span className="font-mono text-sm font-bold tracking-wider text-white">
-              {timeString || "12:00:00"}
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Left Decorative Floating Graphic / Palm Leaf Shape */}
-        <motion.div
-          animate={
-            reduce
-              ? {}
-              : {
-                  y: [0, -15, 0],
-                  rotate: [0, 4, 0],
-                }
-          }
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          style={{ transform: "translateZ(30px)" }}
-          className="pointer-events-none absolute -left-12 bottom-10 hidden xl:block opacity-40 hover:opacity-60 transition-opacity"
-        >
-          <svg width="220" height="220" viewBox="0 0 200 200" fill="none">
-            <path
-              d="M30 170 C60 100, 120 40, 170 30 C120 70, 90 120, 30 170 Z"
-              fill="url(#leafGrad)"
-            />
-            <defs>
-              <linearGradient id="leafGrad" x1="0" y1="0" x2="200" y2="200">
-                <stop offset="0%" stopColor="#E3007B" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#5B0E8B" stopOpacity="0.2" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </motion.div>
-
-        {/* Main Content Box with 3D Depth */}
-        <div style={{ transform: "translateZ(50px)" }} className="relative z-10 max-w-4xl pt-4 pb-12 sm:pb-16">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 rounded-full bg-pink-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-pink-200 backdrop-blur-md border border-pink-500/30 mb-6 shadow-inner"
-          >
-            <span className="h-2 w-2 rounded-full bg-pink-400 animate-pulse" />
-            NAY-B GLOBAL • NOSTALGIC TRAVEL & EXCHANGE
-          </motion.div>
-          
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl leading-[1.08] mb-6">
-            <motion.span
-              initial={reduce ? false : { opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="block font-serif tracking-normal"
-            >
-              ALOHA &amp; WELCOME
-            </motion.span>
-            <motion.span
-              initial={reduce ? false : { opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.25 }}
-              className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-pink-300"
-            >
-              YOUR MEMORABLE JOURNEY AWAITS
-            </motion.span>
-          </h1>
-
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-lg sm:text-xl text-pink-100/90 max-w-2xl font-light leading-relaxed mb-8"
-          >
-            Discover hand-crafted study adventures, vibrant cultural immersion, and stress-free global travel tailored for your future.
-          </motion.p>
-
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-            className="flex flex-wrap gap-4 items-center"
-          >
-            <Button 
-              size="lg" 
-              className="bg-[#E3007B] hover:bg-[#c7006c] text-white font-semibold border-0 shadow-lg shadow-pink-600/30 active:scale-95 transition-all duration-200 rounded-full px-8 py-6 text-base"
-            >
-              Explore Destinations
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-white/30 text-white hover:bg-white/10 hover:text-white active:scale-95 transition-all duration-200 rounded-full px-8 py-6 text-base backdrop-blur-md"
-            >
-              Watch Video Story
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* Floating Benefits Cards with 3D Depth Layer */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          style={{ transform: "translateZ(60px)" }}
-          className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 rounded-3xl bg-white/95 backdrop-blur-xl p-6 text-slate-800 shadow-2xl border border-white/40"
-        >
-          {heroBenefits.map((benefit) => (
-            <motion.div
-              key={benefit.id}
-              whileHover={{ y: -5, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="flex items-start space-x-4 p-3 rounded-2xl transition-colors hover:bg-pink-50/50"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink-500 to-[#E3007B] text-white shadow-md">
-                <benefit.Icon className="h-6 w-6 fill-current" />
-              </div>
-              <div>
-                <h3 className="font-bold text-[#4A0E4E] text-base mb-1">{benefit.heading}</h3>
-                <p className="text-xs text-slate-500 leading-normal">{benefit.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+    <section
+      ref={rootRef}
+      onMouseMove={onMouseMove}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-label="Destinasi edutour Asia Tenggara"
+      className="relative isolate -mt-6 min-h-[100svh] w-full overflow-hidden bg-[#0b1220] text-white"
+    >
+      {/* Background crossfade + parallax */}
+      <motion.div ref={bgRef} style={reduce ? {} : { x: bgX, y: bgY }} className="absolute inset-0">
+        <AnimatePresence mode="sync">
+          <motion.img
+            key={active.id}
+            src={active.image}
+            alt={`${active.country} — ${active.tagline}`}
+            initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 1.08 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
+            transition={{ duration: reduce ? 0 : 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
+          />
+        </AnimatePresence>
+        {/* Scrim ala referensi — langit tetap terang, bawah digelapkan untuk CTA */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0b1220]/55 via-[#0b1220]/10 to-[#0b1220]/75" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1220]/35 via-transparent to-[#0b1220]/35" />
       </motion.div>
+
+      {/* Eyebrow edutour */}
+      <div className="absolute inset-x-0 top-6 z-20 flex justify-center px-4 sm:top-8">
+        <motion.p
+          initial={reduce ? false : { opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase backdrop-blur-md"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#ff4d8d]" />
+          Edutour Sekolah • Pertukaran Pelajar Asia Tenggara
+        </motion.p>
+      </div>
+
+      {/* Judul raksasa ala referensi */}
+      <div ref={titleRef} className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center">
+        <motion.div style={reduce ? {} : { x: titleX }} className="w-full">
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={active.id}
+              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -40 }}
+              transition={{ duration: reduce ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="font-sans text-[17vw] leading-[0.9] font-extrabold tracking-tighter whitespace-nowrap uppercase select-none sm:text-[15vw] lg:text-[13rem] xl:text-[15rem]"
+              style={{ textShadow: "0 2px 60px rgba(11,18,32,0.45)" }}
+            >
+              {active.country}
+            </motion.h1>
+          </AnimatePresence>
+
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={active.id + "-sub"}
+              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.15 }}
+              className="mx-auto mt-2 max-w-xl text-sm font-light text-white/85 sm:text-base"
+            >
+              {active.tagline}
+              <span className="mt-1 block text-xs font-semibold tracking-[0.18em] text-white/60 uppercase">
+                {active.program}
+              </span>
+            </motion.p>
+          </AnimatePresence>
+
+          {/* CTA ala WATCH TOUR */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="mt-8 flex items-center justify-center gap-3"
+          >
+            <a
+              href="#program"
+              className="rounded-full border-2 border-white/90 px-8 py-3 text-sm font-bold tracking-[0.14em] uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#0b1220] active:scale-95"
+            >
+              Lihat Program
+            </a>
+            <a
+              href="#destinasi"
+              className="hidden rounded-full bg-white/10 px-8 py-3 text-sm font-bold tracking-[0.14em] uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/25 active:scale-95 sm:inline-block"
+            >
+              Watch Tour
+            </a>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* LEARN MORE vertikal — kiri */}
+      <div className="absolute bottom-28 left-5 z-20 hidden flex-col items-center gap-3 md:flex lg:left-8">
+        <span className="text-[10px] font-semibold tracking-[0.3em] text-white/70 uppercase [writing-mode:vertical-lr] rotate-180">
+          Learn More
+        </span>
+        <span className="h-24 w-px bg-gradient-to-b from-transparent via-white/70 to-white/70" />
+        <span className="h-2 w-2 rounded-full bg-white/80" />
+      </div>
+
+      {/* Kontrol negara — kanan bawah ala dots + arrows */}
+      <div className="absolute right-5 bottom-28 z-20 hidden flex-col items-end gap-4 md:flex lg:right-8">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => go(-1)}
+            aria-label="Destinasi sebelumnya"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-md transition hover:bg-white hover:text-[#0b1220] active:scale-95"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => go(1)}
+            aria-label="Destinasi berikutnya"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-md transition hover:bg-white hover:text-[#0b1220] active:scale-95"
+          >
+            →
+          </button>
+        </div>
+        <p className="font-mono text-xs tracking-widest text-white/70">
+          {String(index + 1).padStart(2, "0")} / {String(DESTINATIONS.length).padStart(2, "0")}
+        </p>
+      </div>
+
+      {/* Bottom bar — progress + pills negara + socials */}
+      <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-6 lg:px-8">
+        {/* progress autoplay */}
+        {!reduce && (
+          <div className="mx-auto mb-4 h-[2px] max-w-5xl overflow-hidden rounded bg-white/20">
+            <motion.div
+              key={active.id}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: paused ? 0 : 1 }}
+              transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
+              className="h-full w-full origin-left bg-white"
+            />
+          </div>
+        )}
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
+          {/* pills negara */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {DESTINATIONS.map((d, i) => (
+              <button
+                key={d.id}
+                onClick={() => setIndex(i)}
+                aria-label={`Tampilkan ${d.country}`}
+                className={`rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] uppercase backdrop-blur-md transition-all active:scale-95 ${
+                  i === index
+                    ? "bg-white text-[#0b1220]"
+                    : "border border-white/25 bg-white/10 text-white/80 hover:bg-white/25"
+                }`}
+              >
+                {d.short}
+              </button>
+            ))}
+          </div>
+          {/* socials ala referensi */}
+          <div className="flex items-center gap-4 text-white/80">
+            <span className="hidden text-[10px] tracking-[0.25em] uppercase sm:inline">Ikuti NayB</span>
+            <a href="https://www.instagram.com" aria-label="Instagram" className="transition hover:text-white">IG</a>
+            <a href="https://www.linkedin.com" aria-label="LinkedIn" className="transition hover:text-white">IN</a>
+            <a href="https://www.whatsapp.com" aria-label="WhatsApp" className="transition hover:text-white">WA</a>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

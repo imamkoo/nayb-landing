@@ -23,6 +23,7 @@ const ExploreMore: React.FC = () => {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8" id="ExploreMore">
+      <span id="destinasi" className="block h-0 scroll-mt-24" aria-hidden="true" />
       <div className="mx-auto max-w-7xl">
         <div className="flex items-end justify-between mb-14 flex-wrap gap-6">
           <motion.div
