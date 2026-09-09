@@ -1,12 +1,12 @@
 import React from "react";
 
-interface NayBGlobalLogoProps {
+interface NayBeGlobalLogoProps {
   className?: string;
   variant?: "light" | "dark";
   showText?: boolean;
 }
 
-const NayBGlobalLogo: React.FC<NayBGlobalLogoProps> = ({
+const NayBeGlobalLogo: React.FC<NayBeGlobalLogoProps> = ({
   className = "h-10",
   variant = "light",
   showText = true,
@@ -58,7 +58,7 @@ const NayBGlobalLogo: React.FC<NayBGlobalLogoProps> = ({
             style={{ color: textColor }}
             className="text-[1.1rem] sm:text-[1.25rem] tracking-[0.12em] font-black uppercase"
           >
-            NAY-B
+            NAY-BE
           </span>
           <span
             style={{ color: textColor }}
@@ -72,4 +72,4 @@ const NayBGlobalLogo: React.FC<NayBGlobalLogoProps> = ({
   );
 };
 
-export default NayBGlobalLogo;
+export default NayBeGlobalLogo;

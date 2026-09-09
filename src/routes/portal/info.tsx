@@ -13,7 +13,7 @@ const ANNOUNCEMENTS = [
 const TEAM = [
   { name: "Bu Ratna", role: "Koordinator Program", contact: "0813-3400-0001" },
   { name: "Pak Dedi", role: "Pendamping Rombongan", contact: "0813-3400-0002" },
-  { name: "Tim NayB", role: "Bantuan 24/7", contact: "naybglobal@gmail.com" },
+  { name: "Tim NayBe", role: "Bantuan 24/7", contact: "naybeglobal@gmail.com" },
 ];
 
 function InfoPage() {

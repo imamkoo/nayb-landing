@@ -341,7 +341,7 @@ const footerCols: FooterCol[] = [
     heading: "Contact Information",
     links: [
       { id: 1, href: "#", Icon: Phone, name: "62 813 3435 7456" },
-      { id: 2, href: "#", Icon: Email, name: "naybglobal@gmail.com" },
+      { id: 2, href: "#", Icon: Email, name: "naybeglobal@gmail.com" },
       {
         id: 3,
         href: "#",

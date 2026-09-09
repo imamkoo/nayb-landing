@@ -198,7 +198,7 @@ export default function PlatformFlow() {
         <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="mx-auto mb-3 font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-[#c73884]">
-          Platform NayB
+          Platform NayBe
         </motion.p>
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.08 }}
@@ -225,7 +225,7 @@ export default function PlatformFlow() {
         <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="relative z-10 mx-auto mt-4 max-w-md font-sans text-base font-light text-white/50">
-          Hubungi tim NayB — kami bantu dari konsultasi awal hingga keberangkatan
+          Hubungi tim NayBe — kami bantu dari konsultasi awal hingga keberangkatan
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -234,9 +234,9 @@ export default function PlatformFlow() {
             className="rounded-full bg-white px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#07090e] transition hover:bg-white/90 active:scale-95">
             Hubungi via WhatsApp
           </a>
-          <a href="mailto:naybglobal@gmail.com"
+          <a href="mailto:naybeglobal@gmail.com"
             className="rounded-full border border-white/30 px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:border-white/60 active:scale-95">
-            Email Tim NayB
+            Email Tim NayBe
           </a>
         </motion.div>
       </section>

@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import NayBGlobalLogo from "../Icons/NayBGlobalLogo";
+import NayBeGlobalLogo from "../Icons/NayBeGlobalLogo";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -103,7 +104,7 @@ export default function Hero() {
 
       {/* Nav */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-4 lg:px-14">
-        <NayBGlobalLogo className="h-10 sm:h-12" variant="dark" showText={true} />
+        <NayBeGlobalLogo className="h-10 sm:h-12" variant="dark" showText={true} />
         <nav className="hidden items-center gap-8 lg:flex">
           {["Program", "Tujuan", "Tentang", "Kontak"].map((l) => (
             <a key={l} href={"#" + l.toLowerCase()}
@@ -112,10 +113,13 @@ export default function Hero() {
             </a>
           ))}
         </nav>
-        <a href="#kontak"
-          className="hidden rounded-full bg-[#E3007B] px-6 py-2.5 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95 lg:block">
-          Hubungi Kami
-        </a>
+        <div className="hidden lg:flex items-center gap-4">
+          <ThemeToggle />
+          <a href="#kontak"
+            className="rounded-full bg-[#E3007B] px-6 py-2.5 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95">
+            Hubungi Kami
+          </a>
+        </div>
       </header>
 
       {/* Main text */}

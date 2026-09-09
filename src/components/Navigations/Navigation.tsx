@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { navigationLinks } from "../../utils/content";
-import NayBGlobalLogo from "../Icons/NayBGlobalLogo";
+import NayBeGlobalLogo from "../Icons/NayBeGlobalLogo";
 import React from "react";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const Navigation: React.FC<{ overlay?: boolean }> = ({ overlay = false }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,7 +20,7 @@ const Navigation: React.FC<{ overlay?: boolean }> = ({ overlay = false }) => {
     <div className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#1a0728]/95 backdrop-blur-xl border-b border-white/[0.06]" : "bg-transparent"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-14">
         <Link to="/" className="flex items-center gap-3">
-          <NayBGlobalLogo className="h-10 sm:h-12" variant="dark" />
+          <NayBeGlobalLogo className="h-10 sm:h-12" variant="dark" />
         </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">
@@ -33,10 +34,13 @@ const Navigation: React.FC<{ overlay?: boolean }> = ({ overlay = false }) => {
           ))}
         </ul>
 
-        <a href="#kontak"
-          className="hidden rounded-full bg-[#E3007B] px-6 py-2.5 font-sans text-xs font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95 lg:block">
-          Konsultasi
-        </a>
+        <div className="hidden lg:flex items-center gap-4">
+          <ThemeToggle />
+          <a href="#kontak"
+            className="rounded-full bg-[#E3007B] px-6 py-2.5 font-sans text-xs font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95">
+            Konsultasi
+          </a>
+        </div>
 
         <button className="lg:hidden p-2 text-white" aria-label="Menu">
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

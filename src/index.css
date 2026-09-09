@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-primary-900: #1a0728;
@@ -25,16 +26,26 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #f4f6fa;
+  color: #151515;
+}
+
+html.dark {
   background-color: #1a0728;
   color: #ffffff;
 }
 
 body {
-  background-color: #1a0728;
-  color: #ffffff;
+  background-color: #f4f6fa;
+  color: #151515;
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+html.dark body {
+  background-color: #1a0728;
+  color: #ffffff;
 }
 
 ::selection {

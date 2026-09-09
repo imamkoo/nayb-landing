@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { footerCols, footerSocials } from "../utils/content";
-import NayBGlobalLogo from "./Icons/NayBGlobalLogo";
+import NayBeGlobalLogo from "./Icons/NayBeGlobalLogo";
 
 const Footer: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
             <Link to="/" className="flex items-center gap-3">
-              <NayBGlobalLogo className="h-10 sm:h-12" variant="dark" />
+              <NayBeGlobalLogo className="h-10 sm:h-12" variant="dark" />
             </Link>
             <p className="mt-6 max-w-xs font-sans text-sm font-light text-white/60 leading-relaxed">
               Platform manajemen perjalanan edukasi & pertukaran pelajar terpercaya untuk sekolah-sekolah di Indonesia dan mancanegara.
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
 
         <div className="mt-20 flex flex-col items-center justify-between border-t border-white/10 pt-8 sm:flex-row">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            &copy; {new Date().getFullYear()} NAY-B GLOBAL. All rights reserved.
+            &copy; {new Date().getFullYear()} NAY-BE GLOBAL. All rights reserved.
           </p>
         </div>
       </div>

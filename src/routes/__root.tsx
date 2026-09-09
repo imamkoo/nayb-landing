@@ -12,6 +12,8 @@ import Navigation from "../components/Navigations/Navigation";
 import Page from "../components/Page";
 import MenuContextProvider from "../contexts/MobileMenuContext";
 
+import { ThemeProvider } from "../contexts/ThemeContext";
+
 interface RouterContext {
   getTitle?: () => string;
 }
@@ -35,16 +37,18 @@ export function Root() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MenuContextProvider>
-        <Page>
-          <Navigation overlay={pathname === "/"} />
-          <Main>
-            <Outlet />
-          </Main>
-          <Footer />
-          <MobileMenu />
-        </Page>
-      </MenuContextProvider>
+      <ThemeProvider>
+        <MenuContextProvider>
+          <Page>
+            <Navigation overlay={pathname === "/"} />
+            <Main>
+              <Outlet />
+            </Main>
+            <Footer />
+            <MobileMenu />
+          </Page>
+        </MenuContextProvider>
+      </ThemeProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

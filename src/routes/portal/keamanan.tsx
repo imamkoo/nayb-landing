@@ -6,9 +6,9 @@ export const Route = createFileRoute("/portal/keamanan")({
 });
 
 const EMERGENCY = [
-  { label: "Tim NayB Darurat 24/7", value: "0813-3400-0099" },
+  { label: "Tim NayBe Darurat 24/7", value: "0813-3400-0099" },
   { label: "KBRI Tokyo", value: "+81-3-3447-1947" },
-  { label: "Asuransi Perjalanan", value: "1500-110 (polis NAYB-2026)" },
+  { label: "Asuransi Perjalanan", value: "1500-110 (polis NAYBE-2026)" },
 ];
 
 const GUIDES = [
