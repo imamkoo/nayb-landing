@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/api";
+import { blogPosts as fallbackBlogPosts } from "../utils/content";
 
 const useQueryBlogPosts = () => {
   const {
@@ -8,7 +9,18 @@ const useQueryBlogPosts = () => {
     isLoading,
   } = useQuery({
     queryKey: ["blogPosts"],
-    queryFn: api.getBlogPosts,
+    // Publik harus selalu tampil: Supabase gagal/kosong → pakai data lokal
+    queryFn: async () => {
+      try {
+        const data = await api.getBlogPosts();
+        return data && data.length > 0 ? data : fallbackBlogPosts;
+      } catch {
+        return fallbackBlogPosts;
+      }
+    },
+    retry: false,
+    staleTime: Infinity,
+    initialData: fallbackBlogPosts,
   });
 
   return { blogPosts, error, isLoading };
