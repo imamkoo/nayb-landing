@@ -6,10 +6,8 @@ interface MainProps {
 
 const Main: React.FC<MainProps> = ({ children }) => {
   return (
-    <main className="mx-auto max-w-[108rem] overflow-x-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {children}
-      </div>
+    <main className="w-full bg-[#07090e] text-[#f4f6fa] overflow-x-hidden">
+      {children}
     </main>
   );
 };

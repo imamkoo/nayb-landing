@@ -1,55 +1,61 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import { footerCols, footerSocials } from "../utils/content";
-import NayBGlobalLogo from "./Icons/NayBGlobalLogo";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-primary-800 px-4 pt-16 pb-10 sm:px-6 lg:px-12">
-      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-12 text-white lg:flex-row">
-        <div className="flex max-w-md flex-col gap-4">
-          <NayBGlobalLogo className="h-12" variant="dark" />
-          <div>
-            <p className="mb-3 text-lg font-semibold">
-              Your Future Starts
+    <footer className="bg-[#07090e] border-t border-white/[0.06] pt-20 pb-10 text-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/5">
+                <span className="font-mono text-xs font-bold text-white">N</span>
+              </div>
+              <div>
+                <p className="font-sans text-sm font-extrabold uppercase tracking-[0.18em] text-white">NayB</p>
+                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">Global</p>
+              </div>
+            </Link>
+            <p className="mt-6 max-w-xs font-sans text-sm font-light text-white/50">
+              Platform manajemen perjalanan edukasi & pertukaran pelajar yang andal.
             </p>
-            <p className="mb-6 text-sm font-light leading-relaxed text-white/80">
-              NAY-B GLOBAL creates study adventures you’ll never forget. Choose your
-              dream destination, and we’ll handle everything for a stress-free
-              global experience.
-            </p>
-            <ul className="flex gap-5">
+            <div className="mt-8 flex gap-4">
               {footerSocials.map((social) => (
-                <li key={social.id}>
-                  <a href={social.href} target="_blank" aria-label={social.alt} className="transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 rounded">
-                    <social.Icon className="fill-white" />
-                  </a>
-                </li>
+                <a key={social.id} href={social.href} aria-label={social.alt}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-white/15">
+                  <social.Icon className="h-4 w-4 fill-white" />
+                </a>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
+            {footerCols.map((col) => (
+              <div key={col.id}>
+                <h4 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-6">
+                  {col.heading}
+                </h4>
+                <ul className="flex flex-col gap-4">
+                  {col.links.map((link) => (
+                    <li key={link.id}>
+                      <a href={link.href} className="font-sans text-sm font-light text-white/70 transition hover:text-white flex items-center gap-3">
+                        {link.Icon && <link.Icon className="h-4 w-4 shrink-0 fill-white/40" />}
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
-        <ul className="grid grid-cols-2 gap-10 sm:grid-cols-4 lg:gap-12">
-          {footerCols.map((col) => (
-            <li key={col.id}>
-              <p className="mb-4 text-base font-semibold">{col.heading}</p>
-              <ul className="flex flex-col gap-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.id} className="flex items-center gap-x-2">
-                    {link.Icon && (
-                      <link.Icon className="block h-5 w-5 fill-white" />
-                    )}
-                    <a
-                      className="text-sm font-normal text-white/80 hover:text-white transition-colors"
-                      href={link.href}
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+
+        <div className="mt-20 flex flex-col items-center justify-between border-t border-white/[0.06] pt-8 sm:flex-row">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+            &copy; {new Date().getFullYear()} NAY-B GLOBAL. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );
