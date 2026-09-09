@@ -11,6 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as PortalIndexRouteImport } from './routes/portal/index'
+import { Route as PortalAgendaRouteImport } from './routes/portal/agenda'
+import { Route as PortalDasborRouteImport } from './routes/portal/dasbor'
+import { Route as PortalDokumentasiRouteImport } from './routes/portal/dokumentasi'
+import { Route as PortalInfoRouteImport } from './routes/portal/info'
+import { Route as PortalKeamananRouteImport } from './routes/portal/keamanan'
+import { Route as PortalPembayaranRouteImport } from './routes/portal/pembayaran'
+import { Route as PortalPesertaRouteImport } from './routes/portal/peserta'
+import { Route as PortalRencanaRouteImport } from './routes/portal/rencana'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +32,147 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalAgendaRoute = PortalAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalDasborRoute = PortalDasborRouteImport.update({
+  id: '/dasbor',
+  path: '/dasbor',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalDokumentasiRoute = PortalDokumentasiRouteImport.update({
+  id: '/dokumentasi',
+  path: '/dokumentasi',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalInfoRoute = PortalInfoRouteImport.update({
+  id: '/info',
+  path: '/info',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalKeamananRoute = PortalKeamananRouteImport.update({
+  id: '/keamanan',
+  path: '/keamanan',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalPembayaranRoute = PortalPembayaranRouteImport.update({
+  id: '/pembayaran',
+  path: '/pembayaran',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalPesertaRoute = PortalPesertaRouteImport.update({
+  id: '/peserta',
+  path: '/peserta',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalRencanaRoute = PortalRencanaRouteImport.update({
+  id: '/rencana',
+  path: '/rencana',
+  getParentRoute: () => PortalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/portal': typeof PortalRouteWithChildren
+  '/portal/agenda': typeof PortalAgendaRoute
+  '/portal/dasbor': typeof PortalDasborRoute
+  '/portal/dokumentasi': typeof PortalDokumentasiRoute
+  '/portal/info': typeof PortalInfoRoute
+  '/portal/keamanan': typeof PortalKeamananRoute
+  '/portal/pembayaran': typeof PortalPembayaranRoute
+  '/portal/peserta': typeof PortalPesertaRoute
+  '/portal/rencana': typeof PortalRencanaRoute
+  '/portal/': typeof PortalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/portal/agenda': typeof PortalAgendaRoute
+  '/portal/dasbor': typeof PortalDasborRoute
+  '/portal/dokumentasi': typeof PortalDokumentasiRoute
+  '/portal/info': typeof PortalInfoRoute
+  '/portal/keamanan': typeof PortalKeamananRoute
+  '/portal/pembayaran': typeof PortalPembayaranRoute
+  '/portal/peserta': typeof PortalPesertaRoute
+  '/portal/rencana': typeof PortalRencanaRoute
+  '/portal': typeof PortalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/portal': typeof PortalRouteWithChildren
+  '/portal/agenda': typeof PortalAgendaRoute
+  '/portal/dasbor': typeof PortalDasborRoute
+  '/portal/dokumentasi': typeof PortalDokumentasiRoute
+  '/portal/info': typeof PortalInfoRoute
+  '/portal/keamanan': typeof PortalKeamananRoute
+  '/portal/pembayaran': typeof PortalPembayaranRoute
+  '/portal/peserta': typeof PortalPesertaRoute
+  '/portal/rencana': typeof PortalRencanaRoute
+  '/portal/': typeof PortalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/portal'
+    | '/portal/agenda'
+    | '/portal/dasbor'
+    | '/portal/dokumentasi'
+    | '/portal/info'
+    | '/portal/keamanan'
+    | '/portal/pembayaran'
+    | '/portal/peserta'
+    | '/portal/rencana'
+    | '/portal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/portal/agenda'
+    | '/portal/dasbor'
+    | '/portal/dokumentasi'
+    | '/portal/info'
+    | '/portal/keamanan'
+    | '/portal/pembayaran'
+    | '/portal/peserta'
+    | '/portal/rencana'
+    | '/portal'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/portal'
+    | '/portal/agenda'
+    | '/portal/dasbor'
+    | '/portal/dokumentasi'
+    | '/portal/info'
+    | '/portal/keamanan'
+    | '/portal/pembayaran'
+    | '/portal/peserta'
+    | '/portal/rencana'
+    | '/portal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  PortalRoute: typeof PortalRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +191,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/agenda': {
+      id: '/portal/agenda'
+      path: '/agenda'
+      fullPath: '/portal/agenda'
+      preLoaderRoute: typeof PortalAgendaRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/dasbor': {
+      id: '/portal/dasbor'
+      path: '/dasbor'
+      fullPath: '/portal/dasbor'
+      preLoaderRoute: typeof PortalDasborRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/dokumentasi': {
+      id: '/portal/dokumentasi'
+      path: '/dokumentasi'
+      fullPath: '/portal/dokumentasi'
+      preLoaderRoute: typeof PortalDokumentasiRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/info': {
+      id: '/portal/info'
+      path: '/info'
+      fullPath: '/portal/info'
+      preLoaderRoute: typeof PortalInfoRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/keamanan': {
+      id: '/portal/keamanan'
+      path: '/keamanan'
+      fullPath: '/portal/keamanan'
+      preLoaderRoute: typeof PortalKeamananRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/pembayaran': {
+      id: '/portal/pembayaran'
+      path: '/pembayaran'
+      fullPath: '/portal/pembayaran'
+      preLoaderRoute: typeof PortalPembayaranRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/peserta': {
+      id: '/portal/peserta'
+      path: '/peserta'
+      fullPath: '/portal/peserta'
+      preLoaderRoute: typeof PortalPesertaRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/rencana': {
+      id: '/portal/rencana'
+      path: '/rencana'
+      fullPath: '/portal/rencana'
+      preLoaderRoute: typeof PortalRencanaRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
+
+interface PortalRouteChildren {
+  PortalAgendaRoute: typeof PortalAgendaRoute
+  PortalDasborRoute: typeof PortalDasborRoute
+  PortalDokumentasiRoute: typeof PortalDokumentasiRoute
+  PortalInfoRoute: typeof PortalInfoRoute
+  PortalKeamananRoute: typeof PortalKeamananRoute
+  PortalPembayaranRoute: typeof PortalPembayaranRoute
+  PortalPesertaRoute: typeof PortalPesertaRoute
+  PortalRencanaRoute: typeof PortalRencanaRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalAgendaRoute: PortalAgendaRoute,
+  PortalDasborRoute: PortalDasborRoute,
+  PortalDokumentasiRoute: PortalDokumentasiRoute,
+  PortalInfoRoute: PortalInfoRoute,
+  PortalKeamananRoute: PortalKeamananRoute,
+  PortalPembayaranRoute: PortalPembayaranRoute,
+  PortalPesertaRoute: PortalPesertaRoute,
+  PortalRencanaRoute: PortalRencanaRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  PortalRoute: PortalRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

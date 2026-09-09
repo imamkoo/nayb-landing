@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
+import { Link } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { platformCategories } from "../../utils/content";
 
@@ -22,6 +23,12 @@ const Platform: React.FC = () => {
           <p className="mx-auto max-w-2xl text-base font-light text-slate-500 sm:text-lg">
             Dari merancang program hingga dokumentasi akhir — semua kebutuhan edutour sekolah dalam satu tempat
           </p>
+          <Link
+            to="/portal"
+            className="mt-6 inline-block rounded-full bg-primary-700 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-primary-700/25 transition hover:bg-primary-800 active:scale-95"
+          >
+            Buka Portal Sekolah
+          </Link>
         </motion.div>
 
         {/* Tab kategori */}

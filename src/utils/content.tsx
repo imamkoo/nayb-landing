@@ -105,6 +105,12 @@ const navigationLinks: NavigationLink[] = [
     text: "Testimonials",
     dropdown: false,
   },
+  {
+    id: 6,
+    href: "/portal",
+    text: "Portal",
+    dropdown: false,
+  },
 ];
 
 const heroBenefits: HeroBenefit[] = [
