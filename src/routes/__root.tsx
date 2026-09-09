@@ -31,11 +31,13 @@ export function Root() {
 
   document.title = title;
 
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
   return (
     <QueryClientProvider client={queryClient}>
       <MenuContextProvider>
         <Page>
-          <Navigation />
+          <Navigation overlay={pathname === "/"} />
           <Main>
             <Outlet />
           </Main>

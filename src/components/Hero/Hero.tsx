@@ -80,6 +80,8 @@ const DESTINATIONS: Destination[] = [
 ];
 
 const AUTOPLAY_MS = 6000;
+// Mask vertikal foreground: langit transparan, paruh bawah foto menutupi teks
+const FG_MASK = "linear-gradient(to bottom, transparent 34%, black 62%)";
 
 const Hero: React.FC = () => {
   const reduce = useReducedMotion();
@@ -87,17 +89,15 @@ const Hero: React.FC = () => {
   const [paused, setPaused] = useState(false);
   const rootRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  const fgRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
 
   const active = DESTINATIONS[index];
 
-  const go = useCallback(
-    (dir: 1 | -1) => {
-      setIndex((prev) => (prev + dir + DESTINATIONS.length) % DESTINATIONS.length);
-    },
-    []
-  );
+  const go = useCallback((dir: 1 | -1) => {
+    setIndex((prev) => (prev + dir + DESTINATIONS.length) % DESTINATIONS.length);
+  }, []);
 
   // Autoplay rotasi negara — mati bila reduced-motion / hover
   useEffect(() => {
@@ -108,7 +108,8 @@ const Hero: React.FC = () => {
     };
   }, [index, paused, reduce, go]);
 
-  // GSAP ScrollTrigger parallax — bg melambat, judul melayang naik + fade
+  // GSAP ScrollTrigger parallax berlapis:
+  // background paling lambat, judul melayang + fade, foreground paling cepat (efek depth)
   useEffect(() => {
     if (reduce || !rootRef.current) return;
     const ctx = gsap.context(() => {
@@ -119,6 +120,23 @@ const Hero: React.FC = () => {
           {
             yPercent: 12,
             scale: 1.2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
+      if (fgRef.current) {
+        gsap.fromTo(
+          fgRef.current,
+          { yPercent: -4, scale: 1.15 },
+          {
+            yPercent: 18,
+            scale: 1.24,
             ease: "none",
             scrollTrigger: {
               trigger: rootRef.current,
@@ -150,7 +168,8 @@ const Hero: React.FC = () => {
     return () => ctx.revert();
   }, [reduce]);
 
-  // Mouse parallax halus (motion value — tanpa re-render)
+  // Mouse parallax halus (motion value — tanpa re-render).
+  // Foreground bergerak ~2x background → teks terasa "di dalam" gambar.
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 60, damping: 18 });
@@ -158,6 +177,8 @@ const Hero: React.FC = () => {
   const bgX = useTransform(sx, [-0.5, 0.5], ["-1.5%", "1.5%"]);
   const bgY = useTransform(sy, [-0.5, 0.5], ["-1.5%", "1.5%"]);
   const titleX = useTransform(sx, [-0.5, 0.5], ["-12px", "12px"]);
+  const fgX = useTransform(sx, [-0.5, 0.5], ["-3%", "3%"]);
+  const fgY = useTransform(sy, [-0.5, 0.5], ["-3%", "3%"]);
 
   const onMouseMove = (e: React.MouseEvent) => {
     if (reduce || !rootRef.current) return;
@@ -173,9 +194,10 @@ const Hero: React.FC = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-label="Destinasi edutour Asia Tenggara"
-      className="relative isolate -mt-6 min-h-[100svh] w-full overflow-hidden bg-[#0b1220] text-white"
+      // Full-bleed keluar dari container Main + naik menutupi nav sticky (overlay)
+      className="relative left-1/2 isolate -mt-[68px] min-h-[100svh] w-screen max-w-none -translate-x-1/2 overflow-hidden bg-[#0b1220] text-white sm:-mt-[76px]"
     >
-      {/* Background crossfade + parallax */}
+      {/* Background + parallax */}
       <motion.div ref={bgRef} style={reduce ? {} : { x: bgX, y: bgY }} className="absolute inset-0">
         <AnimatePresence mode="sync">
           <motion.img
@@ -196,7 +218,7 @@ const Hero: React.FC = () => {
       </motion.div>
 
       {/* Eyebrow edutour */}
-      <div className="absolute inset-x-0 top-6 z-20 flex justify-center px-4 sm:top-8">
+      <div className="absolute inset-x-0 top-24 z-20 flex justify-center px-4 sm:top-28">
         <motion.p
           initial={reduce ? false : { opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -218,7 +240,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -40 }}
               transition={{ duration: reduce ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="font-sans text-[17vw] leading-[0.9] font-extrabold tracking-tighter whitespace-nowrap uppercase select-none sm:text-[15vw] lg:text-[13rem] xl:text-[15rem]"
+              className="font-sans text-[15vw] leading-[0.9] font-extrabold tracking-tighter whitespace-nowrap uppercase select-none sm:text-[14vw] lg:text-[13rem] xl:text-[15rem]"
               style={{ textShadow: "0 2px 60px rgba(11,18,32,0.45)" }}
             >
               {active.country}
@@ -263,6 +285,30 @@ const Hero: React.FC = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Foreground depth layer — foto yang sama, hanya paruh bawah yang tampak,
+          bergerak lebih cepat → teks raksasa terlihat "di dalam" gambar */}
+      <motion.div
+        ref={fgRef}
+        aria-hidden="true"
+        style={reduce ? {} : { x: fgX, y: fgY }}
+        className="pointer-events-none absolute inset-0 z-[15]"
+      >
+        <AnimatePresence mode="sync">
+          <motion.img
+            key={active.id + "-fg"}
+            src={active.image}
+            alt=""
+            initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ maskImage: FG_MASK, WebkitMaskImage: FG_MASK }}
+            loading="lazy"
+          />
+        </AnimatePresence>
+      </motion.div>
 
       {/* LEARN MORE vertikal — kiri */}
       <div className="absolute bottom-28 left-5 z-20 hidden flex-col items-center gap-3 md:flex lg:left-8">
