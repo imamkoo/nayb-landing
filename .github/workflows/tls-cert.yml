@@ -1,0 +1,68 @@
+# Mengeluarkan sertifikat Let's Encrypt via DNS-01 (Netlify DNS)
+# lalu mengunggahnya sebagai custom certificate ke site Netlify.
+# Berjalan tiap bulan + bisa dipicu manual (untuk bootstrap pertama).
+#
+# Secrets yang dibutuhkan (repo Settings -> Secrets and variables -> Actions):
+#   NETLIFY_TOKEN   - Netlify Personal Access Token (User settings -> Applications)
+#   NETLIFY_SITE_ID - Site settings -> General -> Site details -> API ID
+#   ACME_EMAIL      - email untuk akun Let's Encrypt (notifikasi expiry)
+name: TLS Certificate
+
+on:
+  schedule:
+    - cron: "0 2 1 * *" # tanggal 1 tiap bulan, 02:00 UTC
+  workflow_dispatch: # untuk penerbitan pertama / retry manual
+
+jobs:
+  issue-and-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install acme.sh
+        run: |
+          git clone --depth 1 https://github.com/acmesh-official/acme.sh.git /tmp/acme.sh
+          /tmp/acme.sh/acme.sh --install --home "$HOME/.acme.sh" --accountemail "${{ secrets.ACME_EMAIL }}"
+
+      - name: Issue certificate via Netlify DNS
+        env:
+          Netlify_Token: ${{ secrets.NETLIFY_TOKEN }}
+        run: |
+          "$HOME/.acme.sh/acme.sh" --issue --server letsencrypt \
+            --dns dns_netlify \
+            -d naybe.my.id -d www.naybe.my.id \
+            --keylength 2048
+
+      - name: Upload custom certificate to Netlify
+        env:
+          SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.parse, urllib.request
+
+          base = os.path.expanduser("~/.acme.sh/naybe.my.id")
+
+          def read(name):
+              with open(os.path.join(base, name)) as f:
+                  return f.read()
+
+          params = urllib.parse.urlencode({
+              # sertifikat domain (naybe.my.id + www.naybe.my.id)
+              "certificate": read("naybe.my.id.cer"),
+              # private key
+              "key": read("naybe.my.id.key"),
+              # rantai intermediate CA
+              "ca_certificates": read("ca.cer"),
+          })
+          url = f"https://api.netlify.com/api/v1/sites/{os.environ['SITE_ID']}/ssl?{params}"
+          req = urllib.request.Request(
+              url, method="POST",
+              headers={"Authorization": f"Bearer {os.environ['TOKEN']}"},
+          )
+          print(json.load(urllib.request.urlopen(req)))
+          EOF
+
+      - name: Verify HTTPS serves the new certificate
+        run: |
+          sleep 60
+          echo | openssl s_client -connect naybe.my.id:443 -servername naybe.my.id 2>/dev/null \
+            | openssl x509 -noout -subject -dates
