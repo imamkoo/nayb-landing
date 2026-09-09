@@ -20,7 +20,8 @@ jobs:
       - name: Install acme.sh
         run: |
           git clone --depth 1 https://github.com/acmesh-official/acme.sh.git /tmp/acme.sh
-          /tmp/acme.sh/acme.sh --install --home "$HOME/.acme.sh" --accountemail "${{ secrets.ACME_EMAIL }}"
+          cd /tmp/acme.sh
+          ./acme.sh --install --home "$HOME/.acme.sh" --accountemail "${{ secrets.ACME_EMAIL }}"
 
       - name: Issue certificate via Netlify DNS
         env:
