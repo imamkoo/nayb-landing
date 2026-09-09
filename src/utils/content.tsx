@@ -1,5 +1,6 @@
 import {
   type NavigationLink,
+  type PlatformCategory,
   BlogPost,
   FooterCol,
   FooterSocials,
@@ -11,8 +12,10 @@ import {
 } from "./contentTypes";
 
 import Airplane from "../components/Icons/Airplane";
+import BellIcon from "../components/Icons/BellIcon";
 import Booking from "../components/Icons/Booking";
 import Box from "../components/Icons/Box";
+import Checkmark from "../components/Icons/Checkmark";
 import Culinary from "../components/Icons/Culinary";
 import Destination from "../components/Icons/Destination";
 import Email from "../components/Icons/Email";
@@ -21,6 +24,8 @@ import Instagram from "../components/Icons/Instagram";
 import Linkedin from "../components/Icons/Linkedin";
 import { Location as LocationIcon } from "../components/Icons/Location";
 import Phone from "../components/Icons/Phone";
+import SearchIcon from "../components/Icons/SearchIcon";
+import Star from "../components/Icons/Star";
 import WhatsApp from "../components/Icons/WhatsApp";
 
 const navigationLinks: NavigationLink[] = [
@@ -362,6 +367,96 @@ const footerSocials: FooterSocials[] = [
   },
 ];
 
+const platformCategories: PlatformCategory[] = [
+  {
+    id: 1,
+    title: "Dasbor Program",
+    tagline: "Pantau semua program edutour sekolah dalam satu layar.",
+    features: [
+      { id: 1, Icon: Booking, heading: "Daftar Program", description: "Semua program pertukaran pelajar & edutrip sekolah terdokumentasi rapi." },
+      { id: 2, Icon: Box, heading: "Buat Program Baru", description: "Susun program baru dari template: destinasi, durasi, kuota peserta." },
+      { id: 3, Icon: Checkmark, heading: "Progres & Status", description: "Pantau persiapan, keberangkatan, hingga kepulangan tiap rombongan." },
+      { id: 4, Icon: SearchIcon, heading: "Pencarian Program", description: "Cari program berdasar negara, jenjang, tema belajar, atau jadwal." },
+    ],
+  },
+  {
+    id: 2,
+    title: "Rencana & Mitra",
+    tagline: "Rancang program bersama sekolah mitra dan destinasi terbaik.",
+    features: [
+      { id: 1, Icon: Destination, heading: "Jenis & Tujuan Program", description: "Pertukaran pelajar, school immersion, study tour, atau language trip." },
+      { id: 2, Icon: LocationIcon, heading: "Pilih Mitra & Destinasi", description: "Jepang, China, hingga Asia Tenggara — sesuaikan dengan kurikulum." },
+      { id: 3, Icon: Guide, heading: "Kelola Jaringan Mitra", description: "Data sekolah mitra, homestay, dan pemandu lokal dalam satu tempat." },
+      { id: 4, Icon: Email, heading: "Buat Proposal", description: "Generate proposal kegiatan siap ajukan ke sekolah dan orang tua." },
+    ],
+  },
+  {
+    id: 3,
+    title: "Agenda Perjalanan",
+    tagline: "Itinerary harian yang jelas untuk guru, siswa, dan orang tua.",
+    features: [
+      { id: 1, Icon: Airplane, heading: "Itinerary Harian", description: "Jadwal kunjungan sekolah, wisata edukasi, hingga waktu istirahat." },
+      { id: 2, Icon: Star, heading: "Linimasa Kegiatan", description: "Alur kegiatan dari briefing, keberangkatan, sampai evaluasi akhir." },
+      { id: 3, Icon: BellIcon, heading: "Pengingat Agenda", description: "Notifikasi otomatis sebelum tiap kegiatan penting dimulai." },
+    ],
+  },
+  {
+    id: 4,
+    title: "Peserta & Dokumen",
+    tagline: "Administrasi siswa dan perizinan tanpa kertas berserakan.",
+    features: [
+      { id: 1, Icon: Booking, heading: "Daftar Peserta", description: "Data siswa, guru pendamping, dan kelompok rombongan terpusat." },
+      { id: 2, Icon: Checkmark, heading: "Persetujuan & Izin", description: "Izin orang tua dan persetujuan sekolah terdigitalisasi." },
+      { id: 3, Icon: Email, heading: "Status Dokumen", description: "Lacak paspor, visa, asuransi, dan surat izin tiap peserta." },
+      { id: 4, Icon: BellIcon, heading: "Notifikasi Dokumen", description: "Peringatan dokumen kurang atau mendekati kedaluwarsa." },
+    ],
+  },
+  {
+    id: 5,
+    title: "Info & Komunikasi",
+    tagline: "Orang tua tenang karena kabar perjalanan selalu sampai.",
+    features: [
+      { id: 1, Icon: Star, heading: "Pengumuman", description: "Info resmi program, jadwal, dan perubahan terkini." },
+      { id: 2, Icon: Guide, heading: "Portal Orang Tua", description: "Ruang khusus orang tua memantau perjalanan anak." },
+      { id: 3, Icon: LocationIcon, heading: "Live Journey", description: "Kabar dan posisi rombongan diperbarui selama perjalanan." },
+      { id: 4, Icon: Phone, heading: "Kontak Tim", description: "Hubungi tim pendamping dan koordinator kapan pun dibutuhkan." },
+    ],
+  },
+  {
+    id: 6,
+    title: "Pembayaran",
+    tagline: "Biaya transparan, tagihan rapi, bukti tersimpan.",
+    features: [
+      { id: 1, Icon: Box, heading: "Rincian Biaya", description: "Komponen biaya program terbuka: tiket, akomodasi, makan, tiket wisata." },
+      { id: 2, Icon: Booking, heading: "Tagihan Per Peserta", description: "Tagihan individual tiap siswa, bisa dicicil bertahap." },
+      { id: 3, Icon: Checkmark, heading: "Bukti & Riwayat", description: "Bukti bayar dan riwayat transaksi tersimpan aman." },
+      { id: 4, Icon: BellIcon, heading: "Pengingat Pembayaran", description: "Pengingat jatuh tempo otomatis ke orang tua." },
+    ],
+  },
+  {
+    id: 7,
+    title: "Dokumentasi & Evaluasi",
+    tagline: "Kenangan terdokumentasi, hasil belajar terukur.",
+    features: [
+      { id: 1, Icon: Star, heading: "Galeri Foto & Video", description: "Momen perjalanan terdokumentasi dan bisa dibagikan." },
+      { id: 2, Icon: Guide, heading: "Refleksi Siswa", description: "Jurnal dan cerita pengalaman dari tiap peserta." },
+      { id: 3, Icon: Checkmark, heading: "Hasil Belajar", description: "Capaian pembelajaran dan sertifikat keikutsertaan program." },
+      { id: 4, Icon: Box, heading: "Arsip Program", description: "Seluruh program tersimpan sebagai portofolio sekolah." },
+    ],
+  },
+  {
+    id: 8,
+    title: "Keamanan & Akun",
+    tagline: "Keselamatan peserta prioritas utama setiap program.",
+    features: [
+      { id: 1, Icon: Phone, heading: "Kontak Darurat", description: "Nomor darurat tim, rumah sakit, dan KBRI di tiap destinasi." },
+      { id: 2, Icon: Checkmark, heading: "Panduan Keselamatan", description: "SOP keamanan, mitigasi risiko, dan tata tertib perjalanan." },
+      { id: 3, Icon: LocationIcon, heading: "Masuk & Hak Akses", description: "Peran terpisah: admin, guru, siswa, dan orang tua." },
+      { id: 4, Icon: Guide, heading: "Pengaturan Profil", description: "Kelola profil sekolah, data kontak, dan preferensi notifikasi." },
+    ],
+  },
+];
+
 export {
   blogPosts,
   footerCols,
@@ -369,6 +464,7 @@ export {
   heroBenefits,
   locations,
   navigationLinks,
+  platformCategories,
   services,
   steps,
   testimonials,

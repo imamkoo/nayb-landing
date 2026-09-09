@@ -82,6 +82,20 @@ interface Lead {
   emailAddress: string;
 }
 
+interface PlatformFeature {
+  id: number;
+  Icon: (props: { className: string }) => JSX.Element;
+  heading: string;
+  description: string;
+}
+
+interface PlatformCategory {
+  id: number;
+  title: string;
+  tagline: string;
+  features: PlatformFeature[];
+}
+
 export type {
   BlogPost,
   FooterCol,
@@ -91,6 +105,8 @@ export type {
   Lead,
   Location,
   NavigationLink,
+  PlatformCategory,
+  PlatformFeature,
   Service,
   Step,
   Testimonial,

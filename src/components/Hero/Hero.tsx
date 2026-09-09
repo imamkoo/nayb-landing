@@ -77,6 +77,24 @@ const DESTINATIONS: Destination[] = [
     image:
       "https://images.unsplash.com/photo-1559494007-9f5847c49d94?q=80&w=2000&auto=format&fit=crop",
   },
+  {
+    id: "japan",
+    country: "JAPAN",
+    short: "JP",
+    tagline: "Tokyo, Kyoto & Fuji — Budaya Pop & Tradisi",
+    program: "Pertukaran Pelajar • 7–14 Hari",
+    image:
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "china",
+    country: "CHINA",
+    short: "CN",
+    tagline: "Beijing & Shanghai — Sejarah & Teknologi",
+    program: "Study Tour • 6–12 Hari",
+    image:
+      "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2000&auto=format&fit=crop",
+  },
 ];
 
 const AUTOPLAY_MS = 6000;

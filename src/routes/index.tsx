@@ -7,6 +7,7 @@ import Hero from "../components/Hero/Hero";
 import Main from "../components/Main";
 import News from "../components/News/News";
 import Page from "../components/Page";
+import Platform from "../components/Platform/Platform";
 import Services from "../components/Services/Services";
 import Steps from "../components/Steps/Steps";
 import Testimonials from "../components/Testimonials/Testimonials";
@@ -27,6 +28,7 @@ function RouteComponent() {
           <Main>
             <Steps />
             <Services />
+            <Platform />
             <News />
             <ExploreMore />
             <FrequentTravelers />
