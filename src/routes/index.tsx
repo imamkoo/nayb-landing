@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Hero from "../components/Hero/Hero";
-import PlatformFlow from "../components/PlatformFlow/PlatformFlow";
+import PublicLandingFlow from "../components/PublicLandingFlow/PublicLandingFlow";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -8,9 +12,10 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Hero />
-      <PlatformFlow />
-    </>
+      <PublicLandingFlow />
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 }
