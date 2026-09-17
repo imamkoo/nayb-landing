@@ -52,7 +52,9 @@ interface Testimonial {
   img: string;
   alt: string;
   name: string;
+  nameEn?: string;
   description: string;
+  descriptionEn?: string;
   vacation: string;
 }
 

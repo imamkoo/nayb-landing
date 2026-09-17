@@ -135,24 +135,24 @@ const heroBenefits: HeroBenefit[] = [
 ];
 
 const steps: Step[] = [
-  {
-    id: 1,
-    heading: "Start Your World Adventure",
-    description:
-      "Find student exchange programs that match your dreams. Study abroad and make fun memories.",
-  },
-  {
-    id: 2,
-    heading: "Learn in New Places",
-    description:
-      "Join top schools and explore new cultures. Travel and grow while studying.",
-  },
-  {
-    id: 3,
-    heading: "Pick Trips That Fit You",
-    description:
-      "Choose flexible exchange programs for your free spirit. Study, travel, and live your way.",
-  },
+  { id: 1, heading: "Rencana & Keinginan Klien", description: "Tim menerima request dan tujuan yang diinginkan klien — destinasi, durasi, capain belajar, dan anggaran." },
+  { id: 2, heading: "Penentuan Peserta & Administrasi", description: "Presentasi kepada calon peserta, pendataan, hingga pembayaran yang tertib dan transparan." },
+  { id: 3, heading: "Persiapan Peserta", description: "Pengecekan koper dan hal-hal yang harus disiapkan peserta untuk kenyamanan selama program (untuk siswa)." },
+  { id: 4, heading: "Keberangkatan", description: "Pelaksanaan perjalanan dengan pendampingan penuh, SOP keselamatan, dan update harian untuk sekolah & orang tua." },
+];
+
+export const programGallery = [
+  { id: "exchange", label: "Student Exchange", labelId: "Pertukaran Pelajar", images: ["/locations/sonevaJani.webp", "/locations/kudahuvadhoo.webp", "/locations/nusaPenida.webp", "/locations/grandAnse.webp", "/locations/zakynthos.webp", "/locations/greatBarrierReef.webp"] },
+  { id: "immersion", label: "School Immersion", labelId: "School Immersion", images: ["/locations/fourSeasons.webp", "/locations/sonevaSecret.webp", "/locations/navagioBay.webp", "/locations/nusaPenida.webp", "/locations/kudahuvadhoo.webp", "/locations/grandAnse.webp"] },
+  { id: "studytour", label: "Study Tour", labelId: "Study Tour", images: ["/locations/greatBarrierReef.webp", "/locations/zakynthos.webp", "/locations/sonevaJani.webp", "/locations/fourSeasons.webp", "/locations/grandAnse.webp", "/locations/navagioBay.webp"] },
+];
+
+export const faqs = [
+  { q: "Apakah aman untuk siswa SMP/SMA?", qEn: "Is it safe for junior/senior high students?", a: "Ya. Setiap rombongan didampingi tour leader & guru pendamping, SOP keselamatan berlapis, dan grup komunikasi harian dengan sekolah & orang tua.", aEn: "Yes. Every cohort has tour leaders & teacher chaperones, layered safety SOPs, and daily group updates for schools & parents." },
+  { q: "Berapa minimal peserta?", qEn: "Minimum participants?", a: "Fleksibel per program — tim kami akan sesuaikan opsi keberangkatan dan biaya agar tetap efisien untuk sekolah Anda.", aEn: "Flexible per program — our team will tune departure options and costing to stay efficient for your school." },
+  { q: "Apakah itinerary bisa custom?", qEn: "Can the itinerary be customized?", a: "Bisa. Inilah inti layanan kami: kurikulum-terhubung dan menyesuaikan durasi, destinasi, serta anggaran.", aEn: "Absolutely. That is our core: curriculum-linked, tuned to duration, destination, and budget." },
+  { q: "Bagaimana dengan visa & dokumen?", qEn: "What about visas & documents?", a: "Tim NayBe membantu checklist dokumen, briefing, dan pengecekan koper sebelum berangkat.", aEn: "NayBe assists with document checklists, briefings, and luggage checks before departure." },
+  { q: "Bagaimana cara ajukan proposal sekolah?", qEn: "How to request a school proposal?", a: "Isi form Ajukan Proposal / Special Request di bawah — tim akan menghubungi dengan draf itinerary & rincian biaya.", aEn: "Use the Request Proposal / Special Request form below — our team will follow up with a draft itinerary & cost breakdown." },
 ];
 
 const services: Service[] = [
@@ -285,24 +285,9 @@ const locations: Location[] = [
 ];
 
 const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    img: "/headshots/linh.webp",
-    alt: "Headshot of a customer named Linh Chuong",
-    name: "Linh Chuong",
-    description:
-      "Our experience with GoTravel has been nothing short of exceptional. We were able to find & book our annual vacation to Thailand in under an hour! ",
-    vacation: "Trip to Thialand",
-  },
-  {
-    id: 2,
-    name: "Alex Johnson",
-    alt: "Headshot of a customer named Alex Johnson",
-    img: "/headshots/alex.webp",
-    description:
-      "I booked a 2 week vacation to the Maldives for me and my fiance with GoTravel. Very fair price and stunning resort. Felt amazing to unwind and get away!",
-    vacation: "Maldives Getaway",
-  },
+  { id: 1, img: "/headshots/linh.webp", alt: "Orang tua siswa", name: "Ibu Rina — Orang tua, Surabaya", nameEn: "Mrs. Rina — Parent, Surabaya", description: "“Anak saya pulang lebih percaya diri dan mandiri. Komunikasi tim NayBe setiap hari bikin kami tenang di rumah.”", descriptionEn: "“Our child came home more confident and independent. NayBe's daily updates gave us peace of mind.”", vacation: "School Immersion — Malaysia" },
+  { id: 2, img: "/headshots/alex.webp", alt: "Orang tua siswa", name: "Bapak Hendra — Orang tua, Mojokerto", nameEn: "Mr. Hendra — Parent, Mojokerto", description: "“Persiapan matang, koper sampai briefing detail. Anak-anak nyaman, guru juga terbantu.”", descriptionEn: "“Thorough preparation, from luggage checks to detailed briefings. Students were comfortable and teachers well supported.”", vacation: "Study Tour — Singapore" },
+  { id: 3, img: "/headshots/tiffany.webp", alt: "Guru pendamping", name: "Bu Ayu — Guru Pendamping", nameEn: "Ms. Ayu — Chaperone Teacher", description: "“Itinerary rapi dan edukatif. Siswa benar-benar merasakan school immersion, bukan sekadar jalan-jalan.”", descriptionEn: "“A neat, educational itinerary. Students truly experienced school immersion, not just sightseeing.”", vacation: "Student Exchange — Japan" },
 ];
 
 const footerCols: FooterCol[] = [

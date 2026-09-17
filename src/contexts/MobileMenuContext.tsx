@@ -1,14 +1,13 @@
 import {
   createContext,
   Dispatch,
-  ReactElement,
   SetStateAction,
   useContext,
   useState,
 } from "react";
 
 interface Props {
-  children: ReactElement;
+  children: React.ReactNode;
 }
 
 interface contextValueShape {
