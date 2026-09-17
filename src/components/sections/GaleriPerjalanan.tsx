@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { dict } from "../../utils/i18n";
 import { programGallery } from "../../utils/content";
-import NayBGlobalLogo from "../Icons/NayBGlobalLogo";
+import NayBeGlobalLogo from "../Icons/NayBeGlobalLogo";
 import { Button } from "../ui/button";
 
 const GaleriPerjalanan: React.FC = () => {
@@ -45,7 +45,7 @@ const GaleriPerjalanan: React.FC = () => {
                 className="snap-start w-[280px] sm:w-[340px] lg:w-[420px] flex-shrink-0 rounded-xl overflow-hidden bg-white shadow-[0_8px_24px_rgba(64,25,95,0.08)] border border-[#40195f]/8"
               >
                 <div className="aspect-[4/3] bg-gradient-to-br from-[#fff1f7] to-[#f3ecfa] flex items-center justify-center">
-                  <NayBGlobalLogo variant="dark" showText={false} className="h-12 opacity-30" />
+                  <NayBeGlobalLogo variant="dark" showText={false} className="h-12 opacity-30" />
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Galeri {active.label}</p>

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { dict } from "../../utils/i18n";
-import NayBGlobalLogo from "../Icons/NayBGlobalLogo";
+import NayBeGlobalLogo from "../Icons/NayBeGlobalLogo";
 
 const AboutSection: React.FC = () => {
   const { lang } = useLanguage();
@@ -41,7 +41,7 @@ const AboutSection: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="max-w-xl lg:pl-8"
           >
-            <NayBGlobalLogo className="mb-8" variant="dark" showText />
+            <NayBeGlobalLogo className="mb-8" variant="dark" showText />
             <p className="text-base sm:text-lg leading-relaxed text-slate-600 mb-6">
               {dict.about.body[lang]}
             </p>
