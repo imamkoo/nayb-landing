@@ -1,146 +1,103 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { heroChapters } from "../../utils/content";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { dict } from "../../utils/i18n";
-import { heroChapters } from "../../utils/content";
 
-const AUTO_MS = 6000;
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero: React.FC = () => {
-  const reduce = useReducedMotion();
   const { lang } = useLanguage();
-  const [idx, setIdx] = useState(0);
-  const total = heroChapters.length;
-
-  const go = useCallback((n: number) => setIdx((n + total) % total), [total]);
+  const reduce = useReducedMotion();
+  const rootRef = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    if (reduce) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % total), AUTO_MS);
-    return () => clearInterval(t);
-  }, [reduce, total]);
+    if (reduce || !rootRef.current) return;
 
-  const active = heroChapters[idx];
+    const context = gsap.context(() => {
+      const scenes = gsap.utils.toArray<HTMLElement>("[data-story-scene]");
+      const visual = ".story-visual";
+
+      scenes.forEach((scene, index) => {
+        ScrollTrigger.create({
+          trigger: scene,
+          start: "top 52%",
+          end: "bottom 52%",
+          onEnter: () => setActive(index),
+          onEnterBack: () => setActive(index),
+        });
+      });
+
+      gsap.to(visual, {
+        yPercent: -7,
+        ease: "none",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.2,
+        },
+      });
+    }, rootRef);
+
+    return () => context.revert();
+  }, [reduce]);
+
+  const scene = heroChapters[active];
 
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden bg-cream">
-      {/* Layered photo backdrop — NO dark scrim, bright & cheerful */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={active.id}
-          initial={reduce ? false : { opacity: 0, scale: 1.06 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0"
-          aria-hidden="true"
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${active.img}')` }}
-          />
-          {/* Light wash for text legibility — warm, not dark */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-cream via-transparent to-white/30" />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Vertical side label — Kage-style */}
-      <div className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 lg:flex flex-col items-center gap-4 z-20">
-        <span className="hair h-16 w-px" />
-        <span className="vwrite eyebrow text-primary-700/60">NAYBE GLOBAL · EST 2017</span>
-        <span className="hair h-16 w-px" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[100rem] flex-col justify-between px-6 pb-10 pt-28 sm:px-10 lg:px-16">
-        <div className="max-w-3xl pt-6">
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="eyebrow mb-5 flex items-center gap-3"
-          >
-            <span className="chapter-num text-primary-300">{String(idx + 1).padStart(2, "0")}</span>
-            <span className="h-px w-10 bg-primary-300/60" />
-            {active.tag[lang]}
-          </motion.p>
-
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={active.id}
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? {} : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="display text-[13vw] leading-[0.92] text-primary-800 sm:text-7xl lg:text-8xl"
-            >
-              {active.title[lang]}
-            </motion.h1>
+    <section id="top" ref={rootRef} className="relative bg-cream">
+      <div className="sticky top-0 z-0 h-[100svh] overflow-hidden">
+        <div className="story-visual absolute -inset-y-[8%] inset-x-0">
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={scene.id}
+              initial={reduce ? false : { opacity: 0, scale: 1.08 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.03 }}
+              transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${scene.img}')` }}
+            />
           </AnimatePresence>
-
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-6 max-w-lg text-base leading-relaxed text-primary-800/70 sm:text-lg"
-          >
-            {dict.hero.sub[lang]}
-          </motion.p>
-
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.28 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href="#katalog"
-              className="group inline-flex items-center gap-2 rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 transition-all hover:bg-primary-800 active:scale-95"
-            >
-              {dict.hero.ctaPrimary[lang]}
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
-            <a
-              href="#galeri"
-              className="inline-flex items-center gap-2 rounded-full border border-primary-700/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition-all hover:border-primary-700/40 hover:bg-white active:scale-95"
-            >
-              {dict.hero.ctaSecondary[lang]}
-            </a>
-          </motion.div>
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(253,249,244,0.96)_0%,rgba(253,249,244,0.74)_34%,rgba(253,249,244,0.14)_68%,rgba(253,249,244,0.04)_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-cream via-cream/45 to-transparent" />
         </div>
 
-        {/* Chapter chips — Kage bottom index */}
-        <div className="mt-10">
-          <div className="hair mb-5 w-full" />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {heroChapters.map((c, i) => (
+        <div className="pointer-events-none absolute inset-y-0 right-6 hidden items-center lg:flex">
+          <div className="flex flex-col items-center gap-4">
+            <span className="h-20 w-px bg-primary-800/15" />
+            <span className="vwrite font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-primary-800/55">NayBe Global · Est. 2017</span>
+            <span className="h-20 w-px bg-primary-800/15" />
+          </div>
+        </div>
+
+        <div className="absolute bottom-7 left-6 right-6 z-20 mx-auto max-w-[100rem] sm:left-10 sm:right-10 lg:left-16 lg:right-16">
+          <div className="grid grid-cols-4 gap-2 border-t border-primary-800/15 pt-4 sm:gap-5">
+            {heroChapters.map((chapter, index) => (
               <button
-                key={c.id}
-                onClick={() => go(i)}
-                className="group flex items-start gap-3 text-left"
+                key={chapter.id}
+                type="button"
+                onClick={() => {
+                  document.getElementById(`scene-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="group flex min-w-0 gap-2 text-left"
               >
-                <span
-                  className={`chapter-num text-lg transition-colors ${
-                    i === idx ? "text-primary-300" : "text-primary-800/30 group-hover:text-primary-800/60"
-                  }`}
-                >
-                  {String(i + 1).padStart(2, "0")}
+                <span className={`chapter-num text-lg transition-colors ${active === index ? "text-primary-300" : "text-primary-800/35 group-hover:text-primary-800/70"}`}>
+                  {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="min-w-0">
-                  <span
-                    className={`block text-xs font-semibold uppercase tracking-wide transition-colors ${
-                      i === idx ? "text-primary-800" : "text-primary-800/50 group-hover:text-primary-800/80"
-                    }`}
-                  >
-                    {c.tag[lang]}
+                <span className="min-w-0 pt-1">
+                  <span className={`block truncate font-mono text-[9px] font-bold uppercase tracking-[0.11em] transition-colors ${active === index ? "text-primary-800" : "text-primary-800/50"}`}>
+                    {chapter.tag[lang]}
                   </span>
-                  <span className="mt-1 block h-0.5 w-full overflow-hidden rounded-full bg-primary-800/10">
+                  <span className="mt-2 block h-px overflow-hidden bg-primary-800/15">
                     <motion.span
                       className="block h-full bg-primary-300"
-                      initial={{ width: 0 }}
-                      animate={{ width: i === idx ? "100%" : "0%" }}
-                      transition={{ duration: i === idx && !reduce ? AUTO_MS / 1000 : 0.3, ease: "linear" }}
+                      animate={{ width: active === index ? "100%" : "0%" }}
+                      transition={{ duration: 0.55, ease: "easeOut" }}
                     />
                   </span>
                 </span>
@@ -148,6 +105,59 @@ const Hero: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="relative z-10 -mt-[100svh]">
+        {heroChapters.map((chapter, index) => (
+          <article
+            id={`scene-${index}`}
+            data-story-scene
+            key={chapter.id}
+            className="relative flex min-h-[100svh] items-center px-6 pt-24 sm:px-10 lg:px-16"
+          >
+            <div className="mx-auto grid w-full max-w-[100rem] grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.86fr)_minmax(280px,0.4fr)] lg:items-end lg:gap-20">
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ amount: 0.55 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="max-w-3xl"
+              >
+                <p className="eyebrow mb-5 flex items-center gap-3">
+                  <span className="chapter-num text-primary-300">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="h-px w-10 bg-primary-300/70" />
+                  {chapter.tag[lang]}
+                </p>
+                <h1 className="display max-w-4xl text-[14vw] text-primary-800 sm:text-7xl lg:text-[clamp(72px,8.5vw,144px)]">
+                  {chapter.title[lang]}
+                </h1>
+                {index === 0 && (
+                  <>
+                    <p className="mt-7 max-w-xl text-base leading-relaxed text-primary-800/70 sm:text-lg">{dict.hero.sub[lang]}</p>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      <a href="#katalog" className="rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-primary-700/15 transition hover:bg-primary-800 active:scale-95">{dict.hero.ctaPrimary[lang]} <span className="ml-1">→</span></a>
+                      <a href="#galeri" className="rounded-full border border-primary-800/20 bg-white/55 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition hover:bg-white active:scale-95">{dict.hero.ctaSecondary[lang]}</a>
+                    </div>
+                  </>
+                )}
+              </motion.div>
+
+              <motion.aside
+                initial={reduce ? false : { opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ amount: 0.55 }}
+                transition={{ duration: 0.75, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="hidden border-l border-primary-800/15 pl-7 lg:block"
+              >
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-primary-300">{String(index + 1).padStart(2, "0")} / 04</p>
+                <p className="mt-4 text-sm leading-relaxed text-primary-800/65">
+                  {index === 0 ? dict.about.body[lang] : dict.process.steps[lang][Math.min(index - 1, 3)].desc}
+                </p>
+                <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.16em] text-primary-800/45">Scroll untuk melanjutkan</p>
+              </motion.aside>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );

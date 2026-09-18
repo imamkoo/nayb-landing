@@ -143,17 +143,47 @@ const steps: Step[] = [
 
 const driveThumb = (id: string) => `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
 
-export const heroChapters = [
-  { id: "thailand", img: driveThumb("1_VFwOxaxTs3sXUh0Q4Cvywjh7EOgg267"), tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
-  { id: "exchange", img: driveThumb("1nIqbEqm9mWlZay_vrTNIvRrQ7igc0Gxx"), tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Bertumbuh", en: "Grow" } },
-  { id: "immersion", img: driveThumb("1bGZoclhtW2RdljZyY8XMEbFhFOfwzBpW"), tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
-  { id: "study-tour", img: driveThumb("1EZytSVvzfABR1YINUmRTd-aluUYjqiPW"), tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
+const driveIds = [
+  "1_VFwOxaxTs3sXUh0Q4Cvywjh7EOgg267", "1nIqbEqm9mWlZay_vrTNIvRrQ7igc0Gxx", "1bGZoclhtW2RdljZyY8XMEbFhFOfwzBpW",
+  "1EZytSVvzfABR1YINUmRTd-aluUYjqiPW", "1QlfMBC6ZZ5nL8Z2FB4gvpoyX79SCXZwF", "10Fic8XrUToEe1IzpTr0umLMR4TcQk7lW",
+  "177xEQx_kbdl7m2hlKC8VpVRH-n21YDm-", "1og-9VpzkMuwQc0pHfmKRRYAVCfLNaSsl", "1iBEwwB-tsihNkkGLzSR8Hdn4CYERkLgY",
+  "1kcayOrn5RnjKnUhYa7d6mRrYv1oHb4hu", "1QjRMWYpY_NkKMa4RO31dD7-0ULON8WjD", "10dFvwLaLYqq-WWH70G-7Ce4dr9Wfxs9W",
+  "1GrcnY3t2y4rR_TgnH0UstoAd2YRNar-C", "1ir-XYgS3YSCCtc5h6SJ_WCr9aiBWqdBD", "1EchRGg1y5tNKyxM64tNHrmHZfVpUTycC",
+  "1wNUZ0k0LVaYvZC_Uk1Lg64sFMXdGXs_5", "1hrKE5m8M3rRjAQjztWzLieJDBPDEth5M", "1VvePBpmLRFUW0wVik4NQmRVAgkAmhimJ",
+  "17nL3CHdzIx3dFt49tM60V3bpCoKzgUq-", "13dx1LvXsnFM_Z16zNsfYHfOyZFk_tYZA", "1EkFddjIKoasaspHbT3VmJNHJD2xOEBwH",
+  "1O5usNJeBgHydSxlqOy1tR1d33KSPhKaN", "1eyxCDlhKFj3odwtQoc51xjxf7RO-hw1A", "1g-il_AxTqkpBLTvqM7HOzritx27FU8Ua",
+  "1gHMgWRoewgkd5MQUvnPDsygZRbJiR6NS", "1nTBz0jV1opLcSAlqzlo9z7IkysY4p4p1", "1MltrCdllHOnEKyrl4qQ7FHHkRqNWmWr1",
+  "1pfTJlrTVZINgs9Ht9Aa90wT1Efpvwdu8", "118VgcxsVpKuUFvmRINRDPY4PfmD9zeuk", "1iCgseu40zpLY4hL1hPogGnK2Scmx6LUw",
+  "1XdVuk1K5YLsDwVlmH7i2SKgoSIbEdQpB", "1vYlvvgeykwtpLb2XQ8f_TANuBZrA0yEF", "1a6NP9gY3Ay-pkUXV1iiY9o82C7COsk0r",
+  "1ScZZ-cob4TgSv3ew3wrGEa4zV0F2TgdI", "1d5BimlkMwtgX8l9iF3ZjhZxXAQMTyEG1", "1H7wa2_hpqnPnqMPc79UT9BKkFSk_u8Xh",
+  "1T83k7e0Q1My9wNOoWayp4Du6zjOHq9MM", "1Yk_ULM11iSigSuU5UpIrswIGg7JxnfiK", "1VOLIGx1EEO2OAjWWDW1ZSR10b0vobTGw",
+  "1RYKE_v4HXSqmjluus9DWMIHUdjb2yaFf", "1Lje3F-ia5mOM4SzfWjIjzJtTW7zAnmGk", "1Th-6GoaxDYiMtqJ5lteDpz8lh4D8JSVd",
+  "1vTtfIo0PkRsuL19W11-jm3qfsfIpilCP", "1luS8i82YUVK3_tVaqP0lqIc0BLO_DQDK", "1nw72524GFVOKwQ8DbNOKKDzDzhoEXoD3",
+  "1bT2-zQUi946w3dK8sBZksIOoFZTyBR9V", "12ogT-MyAgsRq_InlgAChum_XEIBJlLaG", "1LaFGjKwr0R7-bnthJOc2MYep0KEiznHg",
 ];
 
+const drivePhotos = driveIds.map(driveThumb);
+
+export const heroChapters = [
+  { id: "open", img: drivePhotos[0], tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
+  { id: "grow", img: drivePhotos[1], tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Bertumbuh", en: "Grow" } },
+  { id: "immerse", img: drivePhotos[2], tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
+  { id: "explore", img: drivePhotos[3], tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
+];
+
+// Split all verified Drive photos across the three program tracks so each row
+// is genuinely swipeable with many images (brief item #9).
+const chunk = <T,>(arr: T[], size: number): T[][] => {
+  const out: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+};
+const [g1 = [], g2 = [], g3 = []] = chunk(drivePhotos, Math.ceil(drivePhotos.length / 3));
+
 export const programGallery = [
-  { id: "exchange", label: "Student Exchange", labelId: "Pertukaran Pelajar", images: [driveThumb("1_VFwOxaxTs3sXUh0Q4Cvywjh7EOgg267"), driveThumb("1nIqbEqm9mWlZay_vrTNIvRrQ7igc0Gxx"), driveThumb("1bGZoclhtW2RdljZyY8XMEbFhFOfwzBpW"), driveThumb("1EZytSVvzfABR1YINUmRTd-aluUYjqiPW")] },
-  { id: "immersion", label: "School Immersion", labelId: "School Immersion", images: [driveThumb("1QlfMBC6ZZ5nL8Z2FB4gvpoyX79SCXZwF"), driveThumb("10Fic8XrUToEe1IzpTr0umLMR4TcQk7lW"), driveThumb("177xEQx_kbdl7m2hlKC8VpVRH-n21YDm-"), driveThumb("1og-9VpzkMuwQc0pHfmKRRYAVCfLNaSsl")] },
-  { id: "studytour", label: "Study Tour", labelId: "Study Tour", images: [driveThumb("1iBEwwB-tsihNkkGLzSR8Hdn4CYERkLgY"), driveThumb("1kcayOrn5RnjKnUhYa7d6mRrYv1oHb4hu"), "/locations/nusaPenida.webp", "/locations/greatBarrierReef.webp"] },
+  { id: "exchange", label: "Student Exchange", labelId: "Pertukaran Pelajar", images: g1 },
+  { id: "immersion", label: "School Immersion", labelId: "School Immersion", images: g2 },
+  { id: "studytour", label: "Study Tour", labelId: "Study Tour", images: g3 },
 ];
 
 export const faqs = [
