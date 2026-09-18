@@ -1,79 +1,103 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary-900: #1a0728;
   --color-primary-800: #2b103f;
   --color-primary-700: #40195f;
-  --color-primary-300: #E3007B;
-  --color-primary-400: #c73884;
+  --color-primary-500: #6b2a8f;
+  --color-primary-300: #c73884;
+  --color-primary-200: #ec6fb0;
   --color-primary-100: #f9e8f2;
+  --color-cream: #fdf9f4;
+  --color-sand: #f4ece3;
 
   --color-grey-1000: #151515;
-  --color-grey-900: #4a4a4a;
-  --color-grey-600: #6d6d6d;
-  --color-grey-300: #e2e8f0;
+  --color-grey-900: #6d6d6d;
+  --color-grey-800: #797979;
+  --color-grey-700: #7d7d7d;
+  --color-grey-600: #8d8d8d;
+  --color-grey-500: #b3b3b3;
+  --color-grey-400: #c7c7c7;
+  --color-grey-300: #d9d9d9;
 
   --color-yellow: #fec107;
   --color-red: #ff1500;
   --color-green: #18c692;
 
-  --font-sans: "Outfit", "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Poppins", "Helvetica Neue", Helvetica;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "Space Grotesk", ui-monospace, monospace;
+
+  --tracking-6: 0.06rem;
+
+  --breakpoint-3xl: 109.375rem;
+  --breakpoint-mdlg: 50rem;
+
+  --animate-spinn: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  --animate-spinn-45: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite -0.45s;
+  --animate-spinn-30: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite -0.3s;
+  --animate-spinn-15: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite -0.15s;
+
+  @keyframes spinner {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: #f4f6fa;
-  color: #151515;
-}
-
-html.dark {
-  background-color: #1a0728;
-  color: #ffffff;
-}
-
+html { scroll-behavior: smooth; }
 body {
-  background-color: #f4f6fa;
-  color: #151515;
-  font-family: var(--font-sans);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  background: #fdf9f4;
+  color: #2b103f;
+  font-family: "Poppins", sans-serif;
 }
+::selection { background: #c73884; color: #fff; }
 
-html.dark body {
-  background-color: #1a0728;
-  color: #ffffff;
+/* Kage-inspired editorial helpers ------------------------------------ */
+.eyebrow {
+  font-family: "Space Grotesk", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #c73884;
 }
+.chapter-num {
+  font-family: "Space Grotesk", monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.display {
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+.vwrite { writing-mode: vertical-rl; }
 
-::selection {
-  background: #E3007B;
-  color: #fff;
-}
+/* Fine rule */
+.hair { height: 1px; background: rgba(43, 16, 63, 0.12); }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #1a0728;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(227, 0, 123, 0.4);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #E3007B;
+/* Scrollbar hide for swipers */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Grain overlay for warmth (very subtle, fixed, pointer-none) */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

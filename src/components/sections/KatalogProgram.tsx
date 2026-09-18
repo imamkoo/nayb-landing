@@ -7,27 +7,27 @@ import { services } from "../../utils/content";
 const KatalogProgram: React.FC = () => {
   const { lang } = useLanguage();
   return (
-    <section id="katalog" className="px-4 sm:px-6 lg:px-8 py-20 sm:py-24 bg-[#fbf8fc]">
-      <div className="mx-auto max-w-7xl">
-        <div className="text-center mb-12">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#c73884] mb-3">{dict.katalog.eyebrow[lang]}</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2b103f] tracking-tight mb-3">{dict.katalog.title[lang]}</h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">{dict.katalog.sub[lang]}</p>
+    <section id="katalog" className="bg-sand/60 px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
+      <div className="mx-auto max-w-[100rem]">
+        <p className="eyebrow mb-4">Chapter 02 — {dict.katalog.eyebrow[lang]}</p>
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <h2 className="display max-w-2xl text-5xl text-primary-800 sm:text-6xl">{dict.katalog.title[lang]}</h2>
+          <p className="max-w-md text-sm leading-relaxed text-primary-800/60">{dict.katalog.sub[lang]}</p>
         </div>
-        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {services.map((s) => (
-            <motion.li key={s.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="rounded-2xl border border-[#40195f]/10 bg-white p-6 shadow-[0_8px_24px_rgba(64,25,95,0.06)]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#40195f] text-white mb-4">
-                <s.Icon className="h-6 w-6 fill-current" />
-              </div>
-              <h3 className="text-lg font-semibold text-[#2b103f] mb-2">{s.heading}</h3>
-              <p className="text-sm text-slate-600">{s.description}</p>
+        <ul className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {services.map((service, index) => (
+            <motion.li key={service.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: index * 0.05 }} className={`rounded-md border border-primary-800/10 bg-white p-8 shadow-[0_16px_40px_rgba(64,25,95,0.06)] ${index % 3 === 1 ? "md:translate-y-10" : ""}`}>
+              <p className="chapter-num text-sm text-primary-300">{String(index + 1).padStart(2, "0")}</p>
+              <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-700"><service.Icon className="h-6 w-6 fill-current" /></div>
+              <h3 className="mt-5 font-display text-2xl text-primary-800">{service.heading}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-primary-800/60">{service.description}</p>
             </motion.li>
           ))}
-          <li className="rounded-2xl border border-dashed border-[#40195f]/20 p-6 bg-white/70 flex items-center justify-center text-sm text-slate-500">
-            {dict.katalog.comingSoon[lang]}
-          </li>
         </ul>
+        <div className="mt-14 flex flex-col items-start justify-between gap-4 border border-dashed border-primary-300/50 bg-white/80 px-7 py-6 sm:flex-row sm:items-center">
+          <p className="text-sm text-primary-800/70">{dict.katalog.comingSoon[lang]}</p>
+          <a href="#proposal" className="rounded-full bg-primary-700 px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-primary-800">{lang === "id" ? "Minta Katalog PDF" : "Request PDF Catalogue"}</a>
+        </div>
       </div>
     </section>
   );

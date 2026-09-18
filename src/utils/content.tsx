@@ -141,10 +141,19 @@ const steps: Step[] = [
   { id: 4, heading: "Keberangkatan", description: "Pelaksanaan perjalanan dengan pendampingan penuh, SOP keselamatan, dan update harian untuk sekolah & orang tua." },
 ];
 
+const driveThumb = (id: string) => `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
+
+export const heroChapters = [
+  { id: "thailand", img: driveThumb("1_VFwOxaxTs3sXUh0Q4Cvywjh7EOgg267"), tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
+  { id: "exchange", img: driveThumb("1nIqbEqm9mWlZay_vrTNIvRrQ7igc0Gxx"), tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Bertumbuh", en: "Grow" } },
+  { id: "immersion", img: driveThumb("1bGZoclhtW2RdljZyY8XMEbFhFOfwzBpW"), tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
+  { id: "study-tour", img: driveThumb("1EZytSVvzfABR1YINUmRTd-aluUYjqiPW"), tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
+];
+
 export const programGallery = [
-  { id: "exchange", label: "Student Exchange", labelId: "Pertukaran Pelajar", images: ["/locations/sonevaJani.webp", "/locations/kudahuvadhoo.webp", "/locations/nusaPenida.webp", "/locations/grandAnse.webp", "/locations/zakynthos.webp", "/locations/greatBarrierReef.webp"] },
-  { id: "immersion", label: "School Immersion", labelId: "School Immersion", images: ["/locations/fourSeasons.webp", "/locations/sonevaSecret.webp", "/locations/navagioBay.webp", "/locations/nusaPenida.webp", "/locations/kudahuvadhoo.webp", "/locations/grandAnse.webp"] },
-  { id: "studytour", label: "Study Tour", labelId: "Study Tour", images: ["/locations/greatBarrierReef.webp", "/locations/zakynthos.webp", "/locations/sonevaJani.webp", "/locations/fourSeasons.webp", "/locations/grandAnse.webp", "/locations/navagioBay.webp"] },
+  { id: "exchange", label: "Student Exchange", labelId: "Pertukaran Pelajar", images: [driveThumb("1_VFwOxaxTs3sXUh0Q4Cvywjh7EOgg267"), driveThumb("1nIqbEqm9mWlZay_vrTNIvRrQ7igc0Gxx"), driveThumb("1bGZoclhtW2RdljZyY8XMEbFhFOfwzBpW"), driveThumb("1EZytSVvzfABR1YINUmRTd-aluUYjqiPW")] },
+  { id: "immersion", label: "School Immersion", labelId: "School Immersion", images: [driveThumb("1QlfMBC6ZZ5nL8Z2FB4gvpoyX79SCXZwF"), driveThumb("10Fic8XrUToEe1IzpTr0umLMR4TcQk7lW"), driveThumb("177xEQx_kbdl7m2hlKC8VpVRH-n21YDm-"), driveThumb("1og-9VpzkMuwQc0pHfmKRRYAVCfLNaSsl")] },
+  { id: "studytour", label: "Study Tour", labelId: "Study Tour", images: [driveThumb("1iBEwwB-tsihNkkGLzSR8Hdn4CYERkLgY"), driveThumb("1kcayOrn5RnjKnUhYa7d6mRrYv1oHb4hu"), "/locations/nusaPenida.webp", "/locations/greatBarrierReef.webp"] },
 ];
 
 export const faqs = [

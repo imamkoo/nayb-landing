@@ -1,59 +1,41 @@
 import React from "react";
-import { Link } from "@tanstack/react-router";
 import { footerCols, footerSocials } from "../utils/content";
 import NayBeGlobalLogo from "./Icons/NayBeGlobalLogo";
 
-const Footer: React.FC = () => {
-  return (
-    <footer className="bg-[#10031a] border-t border-white/10 pt-20 pb-10 text-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-4">
-            <Link to="/" className="flex items-center gap-3">
-              <NayBeGlobalLogo className="h-10 sm:h-12" variant="dark" />
-            </Link>
-            <p className="mt-6 max-w-xs font-sans text-sm font-light text-white/60 leading-relaxed">
-              Platform manajemen perjalanan edukasi & pertukaran pelajar terpercaya untuk sekolah-sekolah di Indonesia dan mancanegara.
-            </p>
-            <div className="mt-8 flex gap-4">
-              {footerSocials.map((social) => (
-                <a key={social.id} href={social.href} aria-label={social.alt}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#E3007B] hover:border-[#E3007B]">
-                  <social.Icon className="h-4 w-4 fill-white" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
-            {footerCols.map((col) => (
-              <div key={col.id}>
-                <h4 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#E3007B] mb-6">
-                  {col.heading}
-                </h4>
-                <ul className="flex flex-col gap-4">
-                  {col.links.map((link) => (
-                    <li key={link.id}>
-                      <a href={link.href} className="font-sans text-sm font-light text-white/70 transition hover:text-white flex items-center gap-3">
-                        {link.Icon && <link.Icon className="h-4 w-4 shrink-0 fill-white/40" />}
-                        {link.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+const Footer: React.FC = () => (
+  <footer className="relative overflow-hidden border-t border-primary-800/10 bg-sand px-6 pb-8 pt-20 text-primary-800 sm:px-10 lg:px-16">
+    <div className="mx-auto max-w-[100rem]">
+      <div className="grid gap-12 lg:grid-cols-[1.5fr_2fr]">
+        <div>
+          <NayBeGlobalLogo className="h-12" variant="light" />
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-800/60">
+            Education tour sejak 2017. Kami membantu sekolah Indonesia merancang perjalanan belajar yang aman, nyaman, dan berkesan.
+          </p>
+          <div className="mt-7 flex gap-3">
+            {footerSocials.map((social) => (
+              <a key={social.id} href={social.href} aria-label={social.alt} className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-800/15 text-primary-700 transition hover:border-primary-300 hover:bg-primary-300 hover:text-white">
+                <social.Icon className="h-4 w-4 fill-current" />
+              </a>
             ))}
           </div>
         </div>
-
-        <div className="mt-20 flex flex-col items-center justify-between border-t border-white/10 pt-8 sm:flex-row">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            &copy; {new Date().getFullYear()} NAY-BE GLOBAL. All rights reserved.
-          </p>
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          {footerCols.slice(0, 3).map((column) => (
+            <div key={column.id}>
+              <h2 className="eyebrow mb-5 text-primary-300">{column.heading}</h2>
+              <ul className="space-y-3">
+                {column.links.map((link) => <li key={link.id}><a href={link.href} className="text-sm text-primary-800/60 transition hover:text-primary-300">{link.name}</a></li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
-    </footer>
-  );
-};
+      <div className="mt-16 flex flex-col gap-3 border-t border-primary-800/10 pt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-primary-800/40 sm:flex-row sm:items-center sm:justify-between">
+        <span>© {new Date().getFullYear()} NayBe Global Indonesia</span>
+        <span>Safe journeys · Open worlds</span>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;

@@ -1,208 +1,156 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, AnimatePresence, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import NayBeGlobalLogo from "../Icons/NayBeGlobalLogo";
-import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { useLanguage } from "../../contexts/LanguageContext";
+import { dict } from "../../utils/i18n";
+import { heroChapters } from "../../utils/content";
 
-gsap.registerPlugin(ScrollTrigger);
+const AUTO_MS = 6000;
 
-type Dest = {
-  id: string;
-  country: string;
-  short: string;
-  tagline: string;
-  program: string;
-  image: string;
-  city: string;
-};
-
-const DESTS: Dest[] = [
-  { id: "japan", country: "JAPAN", short: "JP", tagline: "Tokyo, Kyoto & Mt. Fuji — Budaya Pop & Tradisi", program: "Pertukaran Pelajar • 7–14 Hari", city: "Osaka", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2560&auto=format&fit=crop" },
-  { id: "china", country: "CHINA", short: "CN", tagline: "Beijing, Shanghai & Great Wall — Sejarah & Teknologi", program: "Study Tour • 6–12 Hari", city: "Beijing", image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2560&auto=format&fit=crop" },
-  { id: "indonesia", country: "INDONESIA", short: "ID", tagline: "Bali, Yogyakarta & Budaya Nusantara", program: "Edutrip • 5–10 Hari", city: "Bali", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2560&auto=format&fit=crop" },
-  { id: "singapore", country: "SINGAPORE", short: "SG", tagline: "Little Red Dot — Lab & Inovasi", program: "Campus Visit • 3–6 Hari", city: "Singapore", image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=2560&auto=format&fit=crop" },
-  { id: "thailand", country: "THAILAND", short: "TH", tagline: "Bangkok & Chiang Mai — Sekolah Mitra & Homestay", program: "School Immersion • 5–10 Hari", city: "Chiang Mai", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?q=80&w=2560&auto=format&fit=crop" },
-  { id: "vietnam", country: "VIETNAM", short: "VN", tagline: "Hanoi, Ha Long Bay & Hue — Sejarah & Sains", program: "Study Field Trip • 6–12 Hari", city: "Hanoi", image: "https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=2560&auto=format&fit=crop" },
-  { id: "malaysia", country: "MALAYSIA", short: "MY", tagline: "Kuala Lumpur & Penang — STEM & Multikultural", program: "Edu Camp • 4–8 Hari", city: "Kuala Lumpur", image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2560&auto=format&fit=crop" },
-  { id: "philippines", country: "PHILIPPINES", short: "PH", tagline: "Cebu, El Nido & Boracay — English Immersion", program: "Language Trip • 7–14 Hari", city: "Cebu", image: "https://images.unsplash.com/photo-1559494007-9f5847c49d94?q=80&w=2560&auto=format&fit=crop" },
-];
-
-export default function Hero() {
+const Hero: React.FC = () => {
   const reduce = useReducedMotion();
+  const { lang } = useLanguage();
   const [idx, setIdx] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const total = heroChapters.length;
 
-  const root = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const txtRef = useRef<HTMLDivElement>(null);
-  const timer = useRef<number | null>(null);
-
-  const active = DESTS[idx];
-  const go = useCallback((d: 1 | -1) => {
-    setIdx((p) => (p + d + DESTS.length) % DESTS.length);
-  }, []);
+  const go = useCallback((n: number) => setIdx((n + total) % total), [total]);
 
   useEffect(() => {
-    if (reduce || paused) return;
-    timer.current = window.setTimeout(() => go(1), 5500);
-    return () => { if (timer.current) clearTimeout(timer.current); };
-  }, [idx, paused, reduce, go]);
+    if (reduce) return;
+    const t = setInterval(() => setIdx((i) => (i + 1) % total), AUTO_MS);
+    return () => clearInterval(t);
+  }, [reduce, total]);
 
-  // GSAP scroll parallax
-  useEffect(() => {
-    if (reduce || !root.current) return;
-    const ctx = gsap.context(() => {
-      gsap.to(bgRef.current, {
-        yPercent: 25, ease: "none",
-        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 1.5 },
-      });
-      gsap.to(txtRef.current, {
-        yPercent: -15, opacity: 0, ease: "none",
-        scrollTrigger: { trigger: root.current, start: "top top", end: "55% top", scrub: 0.8 },
-      });
-    }, root);
-    return () => ctx.revert();
-  }, [reduce]);
-
-  // Mouse parallax
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 40, damping: 18 });
-  const sy = useSpring(my, { stiffness: 40, damping: 18 });
-  const bgX = useTransform(sx, [-1, 1], ["-4%", "4%"]);
-  const bgY = useTransform(sy, [-1, 1], ["-4%", "4%"]);
-  const txtX = useTransform(sx, [-1, 1], ["-12px", "12px"]);
-
-  const onMouse = (e: React.MouseEvent) => {
-    if (reduce || !root.current) return;
-    const r = root.current.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
-  };
+  const active = heroChapters[idx];
 
   return (
-    <section ref={root} onMouseMove={onMouse} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-      className="relative h-[100svh] w-full overflow-hidden">
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-cream">
+      {/* Layered photo backdrop — NO dark scrim, bright & cheerful */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={active.id}
+          initial={reduce ? false : { opacity: 0, scale: 1.06 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${active.img}')` }}
+          />
+          {/* Light wash for text legibility — warm, not dark */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-cream via-transparent to-white/30" />
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Background */}
-      <motion.div ref={bgRef} style={{ x: reduce ? 0 : bgX, y: reduce ? 0 : bgY }}
-        className="absolute inset-0 will-change-transform">
-        <AnimatePresence mode="sync">
-          <motion.img key={active.id} src={active.image} alt="" loading="eager"
-            initial={{ scale: 1.12 }} animate={{ scale: 1.05 }}
-            transition={{ duration: 2.2, ease: "easeOut" }}
-            className="h-full w-full object-cover" />
-        </AnimatePresence>
-      </motion.div>
+      {/* Vertical side label — Kage-style */}
+      <div className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 lg:flex flex-col items-center gap-4 z-20">
+        <span className="hair h-16 w-px" />
+        <span className="vwrite eyebrow text-primary-700/60">NAYBE GLOBAL · EST 2017</span>
+        <span className="hair h-16 w-px" />
+      </div>
 
-      {/* Gradient scrim */}
-      <div className="pointer-events-none absolute inset-0 z-10"
-        style={{ background: "linear-gradient(to bottom, rgba(26,7,40,0.55) 0%, rgba(26,7,40,0.1) 45%, rgba(26,7,40,0.88) 100%)" }} />
-      <div className="pointer-events-none absolute inset-0 z-10"
-        style={{ background: "linear-gradient(to right, rgba(26,7,40,0.6) 0%, transparent 45%, transparent 55%, rgba(26,7,40,0.6) 100%)" }} />
+      {/* Content */}
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[100rem] flex-col justify-between px-6 pb-10 pt-28 sm:px-10 lg:px-16">
+        <div className="max-w-3xl pt-6">
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="eyebrow mb-5 flex items-center gap-3"
+          >
+            <span className="chapter-num text-primary-300">{String(idx + 1).padStart(2, "0")}</span>
+            <span className="h-px w-10 bg-primary-300/60" />
+            {active.tag[lang]}
+          </motion.p>
 
-      {/* Nav */}
-      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-4 lg:px-14">
-        <NayBeGlobalLogo className="h-10 sm:h-12" variant="dark" showText={true} />
-        <nav className="hidden items-center gap-8 lg:flex">
-          {["Program", "Tujuan", "Tentang", "Kontak"].map((l) => (
-            <a key={l} href={"#" + l.toLowerCase()}
-              className="font-sans text-sm font-medium text-white/70 transition-colors hover:text-white">
-              {l}
-            </a>
-          ))}
-        </nav>
-        <div className="hidden lg:flex items-center gap-4">
-          <ThemeToggle />
-          <a href="#kontak"
-            className="rounded-full bg-[#E3007B] px-6 py-2.5 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95">
-            Hubungi Kami
-          </a>
-        </div>
-      </header>
-
-      {/* Main text */}
-      <motion.div ref={txtRef} style={{ x: reduce ? 0 : txtX }}
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center will-change-transform">
-        <AnimatePresence mode="wait">
-          <motion.div key={active.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }} className="w-full max-w-6xl">
-            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.3em] text-[#E3007B]">
-              {active.city}
-            </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-3 font-sans text-[16vw] font-black uppercase leading-[0.88] tracking-tighter text-white lg:text-[12vw]"
-              style={{ textShadow: "0 4px 60px rgba(26,7,40,0.7), 0 2px 20px rgba(26,7,40,0.4)" }}>
-              {active.country}
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={active.id}
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? {} : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="display text-[13vw] leading-[0.92] text-primary-800 sm:text-7xl lg:text-8xl"
+            >
+              {active.title[lang]}
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, ease: "easeOut" }}
-              className="mx-auto max-w-lg font-sans text-base font-light tracking-wide text-white/85">
-              {active.tagline}
-              <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
-                {active.program}
-              </span>
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a href="#program"
-                className="rounded-full bg-[#E3007B] px-8 py-3 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#E3007B]/30 transition hover:bg-[#c73884] active:scale-95">
-                Lihat Program
-              </a>
-              <a href="#galeri"
-                className="rounded-full border border-white/30 bg-white/10 px-8 py-3 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition hover:border-white/60 active:scale-95">
-                Galeri
-              </a>
-            </motion.div>
+          </AnimatePresence>
+
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="mt-6 max-w-lg text-base leading-relaxed text-primary-800/70 sm:text-lg"
+          >
+            {dict.hero.sub[lang]}
+          </motion.p>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.28 }}
+            className="mt-8 flex flex-wrap items-center gap-3"
+          >
+            <a
+              href="#katalog"
+              className="group inline-flex items-center gap-2 rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 transition-all hover:bg-primary-800 active:scale-95"
+            >
+              {dict.hero.ctaPrimary[lang]}
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <a
+              href="#galeri"
+              className="inline-flex items-center gap-2 rounded-full border border-primary-700/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition-all hover:border-primary-700/40 hover:bg-white active:scale-95"
+            >
+              {dict.hero.ctaSecondary[lang]}
+            </a>
           </motion.div>
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Arrow + counter */}
-      <div className="absolute bottom-10 right-6 z-30 flex flex-col items-end gap-3 lg:right-14">
-        <div className="flex items-center gap-2">
-          <button onClick={() => go(-1)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition hover:bg-[#E3007B] hover:border-[#E3007B] active:scale-95">
-            ←
-          </button>
-          <button onClick={() => go(1)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition hover:bg-[#E3007B] hover:border-[#E3007B] active:scale-95">
-            →
-          </button>
         </div>
-        <p className="font-mono text-xs tracking-widest text-white/50">
-          {String(idx + 1).padStart(2, "0")} / {String(DESTS.length).padStart(2, "0")}
-        </p>
-      </div>
 
-      {/* Country pills */}
-      <div className="absolute inset-x-0 bottom-8 z-30 px-6 lg:px-14">
-        <div className="flex flex-wrap justify-center gap-2">
-          {DESTS.map((d, i) => (
-            <button key={d.id} onClick={() => setIdx(i)}
-              className={"rounded-full px-3.5 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] transition-all active:scale-95 " +
-                (i === idx ? "bg-[#E3007B] text-white" : "border border-white/15 bg-white/5 text-white/50 hover:bg-white/15")}>
-              {d.short}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      {!reduce && (
-        <div className="absolute inset-x-0 bottom-0 z-30 px-6 pb-5 lg:px-14">
-          <div className="mx-auto h-[2px] max-w-4xl overflow-hidden rounded-full bg-white/10">
-            <motion.div key={active.id} initial={{ scaleX: 0 }} animate={{ scaleX: paused ? 0 : 1 }}
-              transition={{ duration: 5.5, ease: "linear" }}
-              className="h-full origin-left bg-[#E3007B]" />
+        {/* Chapter chips — Kage bottom index */}
+        <div className="mt-10">
+          <div className="hair mb-5 w-full" />
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {heroChapters.map((c, i) => (
+              <button
+                key={c.id}
+                onClick={() => go(i)}
+                className="group flex items-start gap-3 text-left"
+              >
+                <span
+                  className={`chapter-num text-lg transition-colors ${
+                    i === idx ? "text-primary-300" : "text-primary-800/30 group-hover:text-primary-800/60"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <span
+                    className={`block text-xs font-semibold uppercase tracking-wide transition-colors ${
+                      i === idx ? "text-primary-800" : "text-primary-800/50 group-hover:text-primary-800/80"
+                    }`}
+                  >
+                    {c.tag[lang]}
+                  </span>
+                  <span className="mt-1 block h-0.5 w-full overflow-hidden rounded-full bg-primary-800/10">
+                    <motion.span
+                      className="block h-full bg-primary-300"
+                      initial={{ width: 0 }}
+                      animate={{ width: i === idx ? "100%" : "0%" }}
+                      transition={{ duration: i === idx && !reduce ? AUTO_MS / 1000 : 0.3, ease: "linear" }}
+                    />
+                  </span>
+                </span>
+              </button>
+            ))}
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
-}
+};
+
+export default Hero;

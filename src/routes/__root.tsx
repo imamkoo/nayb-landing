@@ -6,13 +6,8 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import Footer from "../components/Footer";
-import Main from "../components/Main";
-import MobileMenu from "../components/Navigations/MobileMenu";
 import Navigation from "../components/Navigations/Navigation";
-import Page from "../components/Page";
-import MenuContextProvider from "../contexts/MobileMenuContext";
-
-import { ThemeProvider } from "../contexts/ThemeContext";
+import { LanguageProvider } from "../contexts/LanguageContext";
 
 interface RouterContext {
   getTitle?: () => string;
@@ -29,26 +24,21 @@ export function Root() {
   const matchWithTitle = [...matches]
     .reverse()
     .find((match) => match.context.getTitle);
-  const title = matchWithTitle?.context.getTitle?.() || "NayBe | Landing Page";
+  const title = matchWithTitle?.context.getTitle?.() || "NayBe Global | Education Tour Since 2017";
 
   document.title = title;
 
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <MenuContextProvider>
-          <Page>
-            <Navigation overlay={pathname === "/"} />
-            <Main>
-              <Outlet />
-            </Main>
-            <Footer />
-            <MobileMenu />
-          </Page>
-        </MenuContextProvider>
-      </ThemeProvider>
+      <LanguageProvider>
+        <div className="flex min-h-screen flex-col bg-cream text-primary-800">
+          <Navigation />
+          <div className="flex-1">
+            <Outlet />
+          </div>
+          <Footer />
+        </div>
+      </LanguageProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
