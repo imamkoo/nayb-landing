@@ -96,6 +96,11 @@ export const dict = {
       id: "Punya kebutuhan khusus di luar pilihan? Tulis di kolom Lainnya.",
       en: "Need something outside the options? Use the Other field.",
     },
+    messageLabel: { id: "Ceritakan kebutuhan Anda", en: "Describe your needs" },
+    messagePlaceholder: {
+      id: "Contoh: 40 siswa kelas 11, tujuan ke Malaysia 5 hari, fokus school immersion + wisata edukasi…",
+      en: "E.g.: 40 grade-11 students, 5 days to Malaysia, focus on school immersion + educational visits…",
+    },
   },
   testimonials: {
     eyebrow: { id: "Testimoni Orang Tua & Siswa", en: "Parents & Students" },

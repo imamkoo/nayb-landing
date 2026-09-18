@@ -13,7 +13,7 @@ const useFormAndValidation = (inputs: FormValues) => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isValid, setIsValid] = useState<boolean>(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: e.target.validationMessage }));
