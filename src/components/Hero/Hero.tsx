@@ -43,7 +43,14 @@ const Hero: React.FC = () => {
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (typeof window !== "undefined" && window.history.replaceState) {
+        window.history.replaceState(null, "", `#${id}`);
+      }
+    } else if (typeof window !== "undefined") {
+      window.location.hash = `#${id}`;
+    }
   };
 
   return (
@@ -62,8 +69,11 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.03 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${scene.img}')` }}
+            className="absolute inset-0 bg-cover"
+            style={{
+              backgroundImage: `url('${scene.img}')`,
+              backgroundPosition: scene.bgPos || "center center",
+            }}
           />
         </AnimatePresence>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(253,249,244,0.97)_0%,rgba(253,249,244,0.82)_30%,rgba(253,249,244,0.25)_65%,rgba(253,249,244,0.04)_100%)]" />
@@ -108,30 +118,39 @@ const Hero: React.FC = () => {
           <p className="mt-6 max-w-lg text-base font-medium leading-relaxed text-primary-800/80 sm:text-lg">
             {dict.hero.sub[lang]}
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => scrollTo("katalog")}
-              className="rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-primary-700/15 transition hover:bg-primary-800 active:scale-[0.97]"
+          <div className="relative z-30 mt-7 flex flex-wrap gap-3">
+            <a
+              href="#katalog"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("katalog");
+              }}
+              className="inline-flex items-center rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-primary-700/15 transition hover:bg-primary-800 active:scale-[0.97] cursor-pointer"
             >
               {dict.hero.ctaPrimary[lang]} <span className="ml-1">→</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollTo("galeri")}
-              className="rounded-full border border-primary-800/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition hover:bg-white active:scale-[0.97]"
+            </a>
+            <a
+              href="#galeri"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("galeri");
+              }}
+              className="inline-flex items-center rounded-full border border-primary-800/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition hover:bg-white active:scale-[0.97] cursor-pointer"
             >
               {dict.hero.ctaSecondary[lang]}
-            </button>
+            </a>
           </div>
         </div>
       </motion.div>
 
       {/* Mini photo card (desktop) — clicks to gallery */}
-      <button
-        type="button"
-        onClick={() => scrollTo("galeri")}
-        className="group absolute bottom-[22svh] right-[7vw] z-30 hidden w-[clamp(170px,16vw,260px)] text-left lg:block"
+      <a
+        href="#galeri"
+        onClick={(e) => {
+          e.preventDefault();
+          scrollTo("galeri");
+        }}
+        className="group absolute bottom-[22svh] right-[7vw] z-30 hidden w-[clamp(170px,16vw,260px)] text-left cursor-pointer lg:block"
       >
         <div className="relative aspect-[4/3] overflow-hidden border border-white/70 shadow-[0_24px_70px_rgba(43,16,63,0.18)]">
           <img src={scene.img} alt="" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
@@ -143,7 +162,7 @@ const Hero: React.FC = () => {
           <span>{scene.tag[lang]}</span>
           <span>{String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
         </p>
-      </button>
+      </a>
 
       {/* Side label */}
       <div className="pointer-events-none absolute right-6 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex">

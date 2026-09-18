@@ -164,16 +164,40 @@ const driveIds = [
 
 const drivePhotos = driveIds.map(driveThumb);
 
-// 4 landscape photos from NayBe Drive showing travel & educational activities:
-// 1. Changi Jewel dome/waterfall group (1Vve)
-// 2. Outdoor activity/immersion landscape (1eyx)
-// 3. Cultural exploration group landscape (1g-il)
-// 4. Study field trip landmark landscape (1gHMg)
+// 4 completely DISTINCT, authentic edutour photos from NayBe Drive:
+// 1. Airport Arrival: 30+ teachers & students holding "NAY-B GLOBAL" banner (landscape, 1Yk_)
+// 2. Landmark Pose: 8 students in NayBe uniform jackets at Jewel Changi floral arch (1Vve_)
+// 3. Flight Experience: Student smiling in airplane cabin with lanyard (1VOL_)
+// 4. Delegation Group: Teachers & students in front of the Changi Rain Vortex waterfall (1nTB_)
 export const heroChapters = [
-  { id: "students", img: driveThumb("1VvePBpmLRFUW0wVik4NQmRVAgkAmhimJ"), tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
-  { id: "exchange", img: driveThumb("1eyxCDlhKFj3odwtQoc51xjxf7RO-hw1A"), tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Tumbuh Bersama", en: "Grow Together" } },
-  { id: "immersion", img: driveThumb("1g-il_AxTqkpBLTvqM7HOzritx27FU8Ua"), tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
-  { id: "studytour", img: driveThumb("1gHMgWRoewgkd5MQUvnPDsygZRbJiR6NS"), tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
+  {
+    id: "arrival",
+    img: driveThumb("1Yk_ULM11iSigSuU5UpIrswIGg7JxnfiK"),
+    bgPos: "center 45%",
+    tag: { id: "Perjalanan Edukasi", en: "Education Journey" },
+    title: { id: "Buka Dunia", en: "Open Worlds" },
+  },
+  {
+    id: "landmark",
+    img: driveThumb("1VvePBpmLRFUW0wVik4NQmRVAgkAmhimJ"),
+    bgPos: "center 72%",
+    tag: { id: "Pertukaran Pelajar", en: "Student Exchange" },
+    title: { id: "Tumbuh Bersama", en: "Grow Together" },
+  },
+  {
+    id: "flight",
+    img: driveThumb("1VOLIGx1EEO2OAjWWDW1ZSR10b0vobTGw"),
+    bgPos: "center 28%",
+    tag: { id: "Study Tour", en: "Study Tour" },
+    title: { id: "Menjelajah", en: "Explore" },
+  },
+  {
+    id: "waterfall",
+    img: driveThumb("1nTBz0jV1opLcSAlqzlo9z7IkysY4p4p1"),
+    bgPos: "center 78%",
+    tag: { id: "School Immersion", en: "School Immersion" },
+    title: { id: "Menyatu", en: "Immerse" },
+  },
 ];
 
 // Split all verified Drive photos across the three program tracks so each row
