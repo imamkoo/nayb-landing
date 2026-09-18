@@ -12,7 +12,7 @@ const TestimonialsAndFaq: React.FC = () => {
   return (
     <section className="bg-sand/60 px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
       <div className="mx-auto max-w-[100rem]">
-        <p className="eyebrow mb-4">Chapter 06 — {dict.testimonials.eyebrow[lang]}</p>
+        <p className="eyebrow mb-4">{dict.testimonials.eyebrow[lang]}</p>
         <h2 className="display max-w-2xl text-5xl text-primary-800 sm:text-6xl">{dict.testimonials.title[lang]}</h2>
         <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (

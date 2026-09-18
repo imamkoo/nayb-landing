@@ -9,8 +9,7 @@ const AboutSection: React.FC = () => {
     <section id="tentang" className="px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
       <div className="mx-auto grid max-w-[100rem] gap-12 lg:grid-cols-[0.55fr_0.9fr_0.85fr] lg:gap-14">
         <motion.div initial={{ opacity: 0, x: -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}>
-          <p className="eyebrow mb-4">Chapter 01 — {dict.about.eyebrow[lang]}</p>
-          <div className="display text-[11vw] text-primary-300/25 sm:text-7xl lg:text-8xl" aria-hidden="true">01</div>
+          <p className="eyebrow mb-4">{dict.about.eyebrow[lang]}</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <h2 className="display max-w-md text-4xl text-primary-800 sm:text-5xl lg:text-6xl">{dict.about.title[lang]}</h2>

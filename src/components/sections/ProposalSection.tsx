@@ -32,7 +32,7 @@ const ProposalSection: React.FC = () => {
     <section id="proposal" className="px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
       <div className="mx-auto grid max-w-[100rem] gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="eyebrow mb-4">Chapter 05 — {dict.proposal.eyebrow[lang]}</p>
+          <p className="eyebrow mb-4">{dict.proposal.eyebrow[lang]}</p>
           <h2 className="display text-5xl text-primary-800 sm:text-6xl">{dict.proposal.title[lang]}</h2>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-primary-800/60">{dict.proposal.sub[lang]}</p>
         </div>

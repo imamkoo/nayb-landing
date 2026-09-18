@@ -9,7 +9,7 @@ const KatalogProgram: React.FC = () => {
   return (
     <section id="katalog" className="bg-sand/60 px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
       <div className="mx-auto max-w-[100rem]">
-        <p className="eyebrow mb-4">Chapter 02 — {dict.katalog.eyebrow[lang]}</p>
+        <p className="eyebrow mb-4">{dict.katalog.eyebrow[lang]}</p>
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <h2 className="display max-w-2xl text-5xl text-primary-800 sm:text-6xl">{dict.katalog.title[lang]}</h2>
           <p className="max-w-md text-sm leading-relaxed text-primary-800/60">{dict.katalog.sub[lang]}</p>
@@ -26,7 +26,7 @@ const KatalogProgram: React.FC = () => {
         </ul>
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border border-dashed border-primary-300/50 bg-white/80 px-7 py-6 sm:flex-row sm:items-center">
           <p className="text-sm text-primary-800/70">{dict.katalog.comingSoon[lang]}</p>
-          <a href="#proposal" className="rounded-full bg-primary-700 px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-primary-800">{lang === "id" ? "Minta Katalog PDF" : "Request PDF Catalogue"}</a>
+          <a href="#proposal" className="rounded-full bg-primary-700 px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-primary-800">{lang === "id" ? "Konsultasi Itinerary" : "Discuss Your Itinerary"}</a>
         </div>
       </div>
     </section>

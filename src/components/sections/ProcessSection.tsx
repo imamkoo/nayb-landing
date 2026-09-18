@@ -8,7 +8,7 @@ const ProcessSection: React.FC = () => {
   return (
     <section className="px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
       <div className="mx-auto max-w-[100rem]">
-        <p className="eyebrow mb-4">Chapter 03 — {dict.process.eyebrow[lang]}</p>
+        <p className="eyebrow mb-4">{dict.process.eyebrow[lang]}</p>
         <h2 className="display max-w-3xl text-5xl text-primary-800 sm:text-6xl">{dict.process.title[lang]}</h2>
         <div className="mt-16 border-t border-primary-800/10">
           {dict.process.steps[lang].map((step, index) => (

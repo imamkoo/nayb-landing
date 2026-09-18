@@ -53,10 +53,10 @@ export const dict = {
     eyebrow: { id: "Katalog Program", en: "Program Catalogue" },
     title: { id: "Rancang Perjalanan Edukasi Anda", en: "Design Your Education Journey" },
     sub: {
-      id: "Katalog lengkap menyusul. Sementara itu, pilih jalur program di bawah — tim kami akan sesuaikan itinerary, durasi, dan anggaran sekolah Anda.",
-      en: "Full catalogue coming soon. In the meantime, pick a track below — our team will tailor itinerary, duration, and budget to your school.",
+      id: "Katalog program lengkap sedang disiapkan. Pilih jenis perjalanan edukasi di bawah, lalu tim kami akan menyusun itinerary sesuai tujuan belajar, durasi, dan anggaran sekolah Anda.",
+      en: "Our full program catalogue is being prepared. Choose an education travel track below and our team will shape an itinerary around your learning goals, duration, and school budget.",
     },
-    comingSoon: { id: "Menyusul — hubungi tim untuk katalog PDF", en: "Coming soon — contact us for the PDF catalogue" },
+    comingSoon: { id: "Katalog program menyusul — diskusikan itinerary sekolah Anda", en: "Program catalogue coming soon — discuss your school itinerary" },
   },
   process: {
     eyebrow: { id: "How we build your program", en: "How we build your program" },
@@ -80,10 +80,9 @@ export const dict = {
     eyebrow: { id: "Galeri Perjalanan", en: "Travel Gallery" },
     title: { id: "Cerita dari Lapangan", en: "Stories from the Field" },
     sub: {
-      id: "Geser per program — setiap kartu bisa di-swipe. Sumber foto asli ada di Drive; di sini pakai placeholder terang sampai foto final diunggah.",
-      en: "Swipe per program — each track is a swipeable row. Originals live on Drive; placeholders are bright until final photos are uploaded.",
+      id: "Dokumentasi asli dari perjalanan sekolah kami. Geser per program, lalu klik foto untuk memperbesar.",
+      en: "Real documentation from our school trips. Swipe each track, then click any photo to enlarge.",
     },
-    viewDrive: { id: "Buka Drive", en: "Open Drive" },
   },
   proposal: {
     eyebrow: { id: "Ajukan Proposal", en: "Request a Proposal" },
