@@ -164,11 +164,13 @@ const driveIds = [
 
 const drivePhotos = driveIds.map(driveThumb);
 
+const heroPhoto = "1VvePBpmLRFUW0wVik4NQmRVAgkAmhimJ";
+
 export const heroChapters = [
-  { id: "open", img: drivePhotos[0], tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
-  { id: "grow", img: drivePhotos[1], tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Bertumbuh", en: "Grow" } },
-  { id: "immerse", img: drivePhotos[2], tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
-  { id: "explore", img: drivePhotos[3], tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
+  { id: "open", img: driveThumb(heroPhoto), tag: { id: "Perjalanan Edukasi", en: "Education Journey" }, title: { id: "Buka Dunia", en: "Open Worlds" } },
+  { id: "together", img: driveThumb(heroPhoto), tag: { id: "Pertukaran Pelajar", en: "Student Exchange" }, title: { id: "Tumbuh Bersama", en: "Grow Together" } },
+  { id: "immerse", img: driveThumb(heroPhoto), tag: { id: "School Immersion", en: "School Immersion" }, title: { id: "Menyatu", en: "Immerse" } },
+  { id: "explore", img: driveThumb(heroPhoto), tag: { id: "Study Tour", en: "Study Tour" }, title: { id: "Menjelajah", en: "Explore" } },
 ];
 
 // Split all verified Drive photos across the three program tracks so each row

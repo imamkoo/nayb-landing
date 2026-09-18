@@ -117,20 +117,16 @@ const Hero: React.FC = () => {
               <h1 className="display max-w-3xl text-[12vw] font-semibold leading-[0.88] tracking-[-0.045em] text-primary-800 sm:text-7xl lg:text-[clamp(76px,8.2vw,144px)]">
                 {scene.title[lang]}
               </h1>
-              {active === 0 && (
-                <>
-                  <p className="mt-6 max-w-lg text-base font-medium leading-relaxed text-primary-800/80 sm:text-lg">{dict.hero.sub[lang]}</p>
-                  <div className="mt-7 flex flex-wrap gap-3">
-                    <a href="#katalog" className="rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-primary-700/15 transition hover:bg-primary-800 active:scale-95">{dict.hero.ctaPrimary[lang]} <span className="ml-1">→</span></a>
-                    <a href="#galeri" className="rounded-full border border-primary-800/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition hover:bg-white active:scale-95">{dict.hero.ctaSecondary[lang]}</a>
-                  </div>
-                </>
-              )}
+              <p className="mt-6 max-w-lg text-base font-medium leading-relaxed text-primary-800/80 sm:text-lg">{dict.hero.sub[lang]}</p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <button type="button" onClick={() => document.getElementById("katalog")?.scrollIntoView({ behavior: "smooth" })} className="rounded-full bg-primary-700 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-primary-700/15 transition hover:bg-primary-800 active:scale-95">{dict.hero.ctaPrimary[lang]} <span className="ml-1">→</span></button>
+                <button type="button" onClick={() => document.getElementById("galeri")?.scrollIntoView({ behavior: "smooth" })} className="rounded-full border border-primary-800/20 bg-white/60 px-7 py-3.5 text-sm font-semibold text-primary-700 backdrop-blur-sm transition hover:bg-white active:scale-95">{dict.hero.ctaSecondary[lang]}</button>
+              </div>
             </motion.div>
           </AnimatePresence>
         </motion.div>
 
-        <motion.a href="#galeri" style={reduce ? undefined : { x: imageX, y: imageY }} className="group absolute bottom-[23svh] right-[7vw] z-30 hidden w-[clamp(180px,17vw,270px)] lg:block" aria-label={dict.hero.ctaSecondary[lang]}>
+        <motion.a href="#galeri" style={reduce ? undefined : { x: imageX, y: imageY }} onClick={(event) => { event.preventDefault(); document.getElementById("galeri")?.scrollIntoView({ behavior: "smooth" }); }} className="group absolute bottom-[23svh] right-[7vw] z-30 hidden w-[clamp(180px,17vw,270px)] lg:block" aria-label={dict.hero.ctaSecondary[lang]}>
           <div className="relative aspect-[4/3] overflow-hidden border border-white/70 bg-primary-800/10 shadow-[0_24px_70px_rgba(43,16,63,0.2)]">
             <img src={scene.img} alt="" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
             <span className="absolute inset-0 flex items-center justify-center bg-primary-800/10">
